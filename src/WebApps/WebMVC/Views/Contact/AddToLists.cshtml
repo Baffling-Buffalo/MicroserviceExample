@@ -1,0 +1,53 @@
+﻿@model WebMVC.ViewModels.ContactListViewModel
+
+@{
+    ViewData["Title"] = Localizer["Add to lists"];
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">@Localizer["Add contacts to lists"]</h3>
+    </div>
+    <form asp-action="AddToLists" asp-antiforgery="true" method="post" id="addContactsToListsForm">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="ContactIds" class="control-label"></label>
+                        <p>
+                            @Model.ContactsString
+                        </p>
+                        <select asp-for="ContactIds" asp-items="@Model.Contacts" hidden></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ListIds" class="control-label"></label>
+                        <comboTree action="GetListsForComboTreePlugin" asp-authorize asp-claims="list_read"
+                                   controller="List"
+                                   comboTreeObjVar="listTree"
+                                   isMultiselect="true"
+                                   placeholder="@SharedLocalizer["Select lists"]"
+                                   showMaxItems="2"
+                                   small="false"
+                                   selectedValues="@Model.ListIds?.ToArray()">
+                        </comboTree>
+                        <select asp-for="ListIds" id="ListIds" hidden></select>
+                        <span asp-validation-for="ListIds" class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Index" class="btn btn-default">@SharedLocalizer["Cancel"]</a>
+            <input type="button" id="btnAddToLists" value="@SharedLocalizer["Add"]" class="btn btn-primary" style="float:right;" />
+        </div>
+    </form>
+
+</div>
+
+
+@section scripts{
+    <script src="~/js/contact/contact.addtolists.js"></script>
+}

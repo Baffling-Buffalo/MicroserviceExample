@@ -1,0 +1,116 @@
+﻿@{Layout = ""; }
+@model LoginViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AlgoIdentity | Log in</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/adminLTE/fontawesome-free-5.9.0-web/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/adminLTE/ionicons.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="~/adminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/adminLTE/dist/css/adminlte.min.css">
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href="~/fonts/Source_Sans_Pro/stylesheet.css" rel="stylesheet">
+</head>
+
+
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="../../index2.html"><b>Algo</b>IDENTITY</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">
+                    @Localizer["Sign in to start your session"]
+                </p>
+                <form asp-route="Login" method="post">
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <div class="input-group mb-3">
+                        <input class="form-control" placeholder="@SharedLocalizer["Username"]" asp-for="Username" autofocus>
+                        <div class="input-group-append input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control" placeholder="@SharedLocalizer["Password"]" asp-for="Password" autocomplete="off">
+                            <div class="input-group-append input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-7 col-sm-8">
+                            @if (Model.AllowRememberLogin)
+                            {
+                                <div class="icheck-primary">
+                                    <input asp-for="RememberLogin" type="checkbox">
+                                    <label asp-for="RememberLogin">
+                                        @Localizer["Remember Me"]
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-5 col-sm-4">
+                            <button type="submit" name="button" value="login" class="btn btn-primary btn-block btn-flat">@SharedLocalizer["Sign in"]</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                </form>
+                <div class="social-auth-links text-center mb-3">
+                    <p>- @SharedLocalizer["OR"] -</p>
+                    @if (Model.ExternalProviders.FirstOrDefault(p => p.AuthenticationScheme == "Windows") != null)
+                    {
+                        <a class="btn btn-block btn-primary"
+                           asp-controller="External"
+                           asp-action="Challenge"
+                           asp-route-provider="Windows"
+                           asp-route-returnUrl="@Model.ReturnUrl">
+                            <i class="fab fa-windows mr-2"></i>@Localizer["Sign in using Windows"]
+                        </a>
+                    }
+                    @if (Model.ExternalProviders.FirstOrDefault(p => p.AuthenticationScheme == "Google") != null)
+                    {
+                        <a class="btn btn-block btn-danger"
+                           asp-controller="External"
+                           asp-action="Challenge"
+                           asp-route-provider="Google"
+                           asp-route-returnUrl="@Model.ReturnUrl">
+                            <i class="fab fa-google-plus mr-2"></i>@Localizer["Sign in using Google"]
+                        </a>
+                    }
+                </div>
+                <!-- /.social-auth-links -->
+                @*<p class="mb-1">
+                        <a href="#">I forgot my password</a>
+                    </p>
+                    <p class="mb-0">
+                        <a href="register.html" class="text-center">Register a new membership</a>
+                    </p>*@
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+
+
+    <!-- jQuery -->
+    <script src="~/adminLTE/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/adminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

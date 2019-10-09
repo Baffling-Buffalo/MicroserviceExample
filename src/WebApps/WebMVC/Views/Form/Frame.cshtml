@@ -1,0 +1,134 @@
+﻿@model System.Net.Http.HttpResponseMessage
+@{
+    Layout = "";
+}
+
+<html style="height:100%">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" type="text/css" />
+
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.min.js"></script>
+
+    <link href="~/lib/viewer/lib/jquery/ui.dynatree.css" rel="stylesheet" />
+    <script type="text/javascript" src="~/lib/viewer/lib/jquery/jquery.dynatree.js" charset="utf-8"></script>
+
+    <script type="text/javascript" src="~/lib/viewer/lib/ozrviewer/OZJSViewer.js" charset="utf-8"></script>
+
+</head>
+
+<body style="width:98%;height:98%">
+    <!--<input type="button" value="Sacuvaj formu" onclick="Report_Save_MemoryStream()" />-->
+    <div id="OZViewer" style="width:100%;height:100%"></div>
+
+    <script type="text/javascript">
+
+        var serverUrl = "/Form/GetFrame";
+
+        var url = new URL((window.location != window.parent.location) ? document.referrer : document.location.href);
+
+        var formName = url.searchParams.get("report");
+       
+        var ozParams = {
+            "global.use_preview_progressbar": "false",
+            //"viewer.external_functions_path"      : "ozp://js/eform.js",
+
+
+            "viewer.exportcommand": "true",
+            "viewer.usetoolbar": "true",
+            "viewer.useprogressbar": "false",
+            "viewer.usestatusbar": "false",
+
+            "viewer.viewmode": "normal",
+            "viewer.zoom": "100",
+            "viewer.maxzoom": "300",
+
+            "viewer.bgcolor": "edf5fa",
+            "viewer.useoutborder": "false",
+            "viewer.useinborder": "false",
+            "viewer.pagedisplay": "singlepagecontinuous",
+
+            "eform.signpad_type": "dialog",
+            "eform.signpad_zoom": "1000",
+            "eform.signpad_highlightcolor": "FF0000",
+            "eform.signpad_iconposition": "sign_bottom",
+            "eform.signpad_prev_next_iconposition": "true",
+            "eform.show_prev_next_input": "true",
+            "eform.textbox_use_highlight": "true",
+            "eform.functionbutton_previewonly": "true",
+            "eform.resourceparam": "window_bgcolor=CC000000,title_bgcolor=CC000000,title_fontcolor=ffffff,title_fontsize=18,"
+                + "complete_url=" + "/lib/viewer/lib/ozrviewer/ozhtml5/theme/btn-done-text.png,"
+                + "reset_url=" + "/lib/viewer/lib/ozrviewer/ozhtml5/theme/btn-clear-text.png"
+        };
+        function SetOZParamters_OZViewer() {
+            var oz;
+            oz = document.getElementById("OZViewer");
+            oz.sendToActionScript("connection.servlet", serverUrl);
+            oz.sendToActionScript("connection.reportname", formName);
+
+            if (ozParams) {
+                Object.keys(ozParams).forEach(function (key) {
+                    // key: the name of the object key
+                    // index: the ordinal position of the key within the object
+                    var value = ozParams[key];
+                    if (Array.isArray(value) && value.length > 0) {
+                        value.forEach(function (item) {
+                            oz.sendToActionScript(key, item);
+                        });
+                    } else {
+                        oz.sendToActionScript(key, value);
+                    }
+                });
+            }
+
+            return true;
+        }
+        start_ozjs("OZViewer", "/lib/viewer/lib/ozrviewer/");
+
+    </script>
+
+    <script language="JavaScript">
+
+        function Report_Save_MemoryStream() {
+
+            OZViewer.Script("save_memorystream");
+
+        }
+
+        function OZExportMemoryStreamCallBack_OZViewer(outputdata) {
+
+            if (outputdata == "{}") {
+
+                alert("Fail");
+
+            } else {
+
+                alert(outputdata);
+
+            }
+        }
+
+        function OZExportCommand_OZViewer(code, path, filename, pagecount, filepaths) {
+
+            if (code == "1") {
+
+                alert(pagecount);
+
+            }
+
+        }
+
+    </script>
+</body>
+
+<script src="~/lib/viewer/lib/pdfjs/web/compatibility.js"></script>
+<script src="~/lib/viewer/lib/pdfjs/build/pdf.js"></script>
+</html>
+
+

@@ -1,0 +1,106 @@
+﻿@model WebMVC.ViewModels.UserGroup.UsersGroupsViewModel
+@section Styles{
+    <!--custom css-->
+    <link href="~/adminlte/plugins/select2/css/select2.min.css" rel="stylesheet" />
+}
+@{
+    ViewData["Title"] = Localizer["Remove Users From Groups"];
+}
+<form method="post" asp-action="RemoveUsersFromGroupsSubmit" class="getGroups">
+    <card title="@Localizer["Remove Users From Groups"].Value">
+        <card-body>
+            <div class="row">
+                <div class="col-12">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <div class="form-group">
+                        <label asp-for="UserIds" class="control-label"></label>
+                        <p>
+                            @foreach (string user in Model.UserStrings)
+                            {
+                                @user;
+                                <span>,</span><br />
+                            }
+                        </p>
+                        <select hidden asp-items="@ViewBag.UserSelectItems" asp-for="UserIds" multiple="multiple" style="width: 100%;"></select>
+                        <span asp-validation-for="UserIds" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="GroupIds" class="control-label"></label>
+                        <comboTree action="GetGroupsForComboTree"
+                                   controller="UserGroup"
+                                   comboTreeObjVar="userGroups"
+                                   selectedValues="@Model?.GroupIds"
+                                   isMultiselect="true"
+                                   placeholder="@Localizer["Select groups"].Value"
+                                   selectionCallback="refreshSelectGroups"
+                                   appendToPlaceholder="false"
+                                   showMaxItems="4"></comboTree>
+                        <span asp-validation-for="GroupIds" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </card-body>
+        <card-footer>
+            <a href="@Model?.ReturnUrl" class="btn btn-default">@SharedLocalizer["Cancel"]</a>
+            <button class="btn btn-primary" style="float:right">@SharedLocalizer["Save"]</button>
+        </card-footer>
+    </card>
+</form>
+
+@section scripts{
+    <script src="~/adminlte/plugins/select2/js/select2.full.min.js"></script>
+
+    <script>
+        $(function () {
+            //Initialize Select2 Element for user search
+            $('.select2').select2({
+                multiple: true,
+                minimumInputLenght: 1,
+                ajax: {
+                    url: '/User/GetUsersForSelect2',
+                    dataType: 'json',
+                    delay: 250,
+                    traditional: true,
+                    data: function (term) {
+                        refreshSelectGroups();
+                        return {
+                            groupIds: groupIds,
+                            searchQuery: term.term
+                        };
+                    },
+                    // Additional AJAX parameters go here; see the end of this chapter for the full code of this example
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.text,
+                                    id: item.id
+                                }
+                            })
+                        };
+                    }
+                }
+            });
+        })
+
+        var groupIds;
+
+        $(".getGroups").submit(function () {
+            if (!$(this).valid())
+                return;
+
+            refreshSelectGroups();
+            for (var i = 0; i < groupIds.length; i++) {
+                $(this).append(`<input type="hidden" name="groupIds" value="${groupIds[i]}" /> `);
+            }
+
+            return true;
+        });
+
+        function refreshSelectGroups() {
+            groupIds = userGroups.getSelectedItemsId();
+        }
+    </script>
+}
+

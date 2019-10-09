@@ -1,0 +1,59 @@
+/*BOOTSTRAP BTN-XS*/
+.btn-group-xs > .btn, .btn-xs {
+    padding: .25rem .4rem;
+    font-size: .875rem;
+    line-height: 1;
+    border-radius: .2rem;
+}
+
+table.dataTable tbody > tr.selected, table.dataTable tbody > tr > .selected {
+    background-color: #007BFF !important;
+    border-radius: 0.25rem;
+    color: white;
+}
+/*BOOTSTRAP BTN-XS END*/
+
+/*BOOTSTRAP BTN-DEFAULT*/
+.btn-default {
+    border-color: #ddd !important;
+}
+/*BOOTSTRAP BTN-DEFAULT END*/
+
+/*SELECT2 BORDER*/
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid #ced4da !important;
+}
+/*SELECT2 BORDER END*/
+
+/*BLOCKQUOTE*/
+blockquote {
+    background: #fff;
+    border-left: .7rem solid #007bff;
+    margin: 1.5em .7rem;
+    padding: .5em .7rem;
+}
+/*BLOCKQUOTE END*/
+
+/*TABLE SELECT*/
+table tbody > tr.selected, table tbody > tr > .selected {
+    background-color: #007BFF !important;
+    border-radius: 0.25rem;
+    color: white;
+}
+/*TABLE SELECT END*/
+
+/*JQUERY TREETABLE*/
+.tt-table div.tt div.content {
+    background-color: #f4f4f4 !important;
+    color: #444 !important;
+    border-color: #ddd !important;
+    border-radius: .2rem !important;
+}
+
+.tt-table div.tt-parent div.content {
+    color: #fff !important;
+    background-color: #007bff !important;
+    border-color: #007bff !important;
+    border: 1px solid !important;
+}
+/*JQUERY TREETABLE END*/

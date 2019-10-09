@@ -1,0 +1,19 @@
+﻿[
+  {
+    //za sve ostale
+    "Id": 1,
+    "Text":"Na osnovu odobrenog Zahteva za korišćenje plaćenog odsustva broj 143729/1-2019 od 19.03.2019. godine, a u skladu sa članom 77. Zakona o radu (\"Sl. glasnik RS\" broj 24/05, 61/05, 54/09, 32/13 i 75/14) i članovima 28. i 29. Kolektivnog ugovora Preduzeća za telekomunikacije \"Telekom Srbija\" a.d. (\"Sl. list Telekoma Srbija\" br. 86/15) odlučeno je kao u dispozitivu.\n\nPouka o pravnom leku: Protiv ovog Rešenja zaposleni može pokrenuti spor pred nadležnim sudom u roku od 60 dana od dana dostavljanja rešenja."
+  },
+  {
+    //Plaćeno odsustvo-Verski praznik
+    //Plaćeno odsustvo-Prvi dan krsne slave
+    "Id": 2,
+    "Text": "Na osnovu odobrenog Zahteva za korišćenje plaćenog odsustva broj 498082/1 od 19.11.2018. godine, a u skladu sa članom 4. Zakona o državnim i drugim praznicima u Republici Srbiji (\"Sl. glasnik RS\" broj 43/01, 101/07 i 92/11) odlučeno je kao u dispozitivu.\n\nPouka o pravnom leku: Protiv ovog Rešenja zaposlena može pokrenuti spor pred nadležnim sudom u roku od 60 dana od dana dostavljanja rešenja."
+  },
+  {
+    //Plaćeno odsustvo-Upućivanje zaposlenog na rekreaciju i rehabilitaciju od strane Društva ili nadležnog Fonda
+    //Plaćeno odsustvo-Upućivanje na specijalistički pregled od strane Društva
+    "Id": 3,
+    "Text": "Na osnovu odobrenog Zahteva za korišćenje plaćenog odsustva, a u skladu sa članom 77. Zakona o radu (\"Sl. glasnik RS\" broj 24/05, 61/05, 54/09, 32/13 i 75/14) i članovima 28. i 29. Kolektivnog ugovora Preduzeća za telekomunikacije \"Telekom Srbija\" a.d. (\"Sl. list Telekoma Srbija\" br. 86/15) odlučeno je kao u dispozitivu.\n\nPouka o pravnom leku: Protiv ovog Rešenja zaposleni može pokrenuti spor pred nadležnim sudom u roku od 60 dana od dana dostavljanja rešenja."
+  }
+]

@@ -1,0 +1,65 @@
+﻿@model WebMVC.ViewModels.UsersRolesViewModel
+@section Styles{
+    <!--custom css-->
+    <link href="~/adminlte/plugins/select2/css/select2.min.css" rel="stylesheet" />
+}
+@{
+    ViewData["Title"] = Localizer["Add Roles To Users"];
+}
+<form method="post" asp-action="AddUsersToRolesSubmit" class="getRoles">
+    <card title="@Localizer["Add Roles To Users"].Value">
+        <card-body>
+            <div class="row">
+                <div class="col-md-4">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="ReturnUrl" />
+                    <div class="form-group">
+                        <label asp-for="UserIds" class="control-label"></label>
+                        @foreach (string user in Model.UserStrings)
+                        {
+                            <p>
+                                @user
+                            </p><br>
+                        }
+                        <select hidden asp-items="@ViewBag.UserSelectItems" asp-for="UserIds" multiple="multiple" style="width: 100%;"></select>
+                        <span asp-validation-for="UserIds" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RoleIds" class="control-label"></label>
+                        <comboTree action="GetRolesForComboTree" controller="Role" comboTreeObjVar="userRoles" selectedValuesStrings="@Model?.RoleIds" isMultiselect="true" placeholder="@Localizer["Select roles"].Value" selectionCallback="refreshSelectRoles" showMaxItems="4"></comboTree>
+                        <span asp-validation-for="RoleIds" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </card-body>
+        <card-footer>
+            <a href="@Model?.ReturnUrl" class="btn btn-default">@SharedLocalizer["Cancel"]</a>
+            <button class="btn btn-primary" style="float:right">@SharedLocalizer["Save"]</button>
+        </card-footer>
+    </card>
+</form>
+
+@section scripts{
+    <script src="~/adminlte/plugins/select2/js/select2.full.min.js"></script>
+
+    <script>
+        var roleIds;
+
+        $(".getRoles").submit(function () {
+            if (!$(this).valid())
+                return;
+
+            refreshSelectRoles();
+            for (var i = 0; i < roleIds.length; i++) {
+                $(this).append(`<input type="hidden" name="roleIds" value="${roleIds[i]}" /> `);
+            }
+
+            return true;
+        });
+
+        function refreshSelectRoles() {
+            roleIds = userRoles.getSelectedItemsId();
+        }
+    </script>
+}
+

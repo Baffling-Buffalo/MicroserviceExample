@@ -1,0 +1,67 @@
+﻿@{Layout = ""; }
+@model LoggedOutViewModel
+@{
+    // set this so the layout rendering sees an anonymous user
+    ViewData["signed-out"] = true;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AlgoIdentity | Logged out</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/adminLTE/fontawesome-free-5.9.0-web/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="~/adminLTE/ionicons.min.css">
+    <!-- icheck bootstrap -->
+    <link rel="stylesheet" href="~/adminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/adminLTE/dist/css/adminlte.min.css">
+
+    <!-- Google Font: Source Sans Pro -->
+    <link href="~/fonts/Source_Sans_Pro/stylesheet.css" rel="stylesheet">
+</head>
+
+
+
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="../../index2.html"><b>Algo</b>IDENTITY</a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body login-card-body">
+                <p class="login-box-msg">@Localizer["You are now logged out"]</p>
+
+                @if (Model.PostLogoutRedirectUri != null)
+                {
+                    <div>
+                        @Localizer["Click"] <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">@Localizer["here"]</a> @Localizer["to return to the"]
+                        <span>@Model.ClientName</span> @Localizer["application"].
+                    </div>
+                }
+
+                @if (Model.SignOutIframeUrl != null)
+                {
+                    <iframe width="0" height="0" class="signout" src="@Model.SignOutIframeUrl"></iframe>
+                }
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+
+    @if (Model.AutomaticRedirectAfterSignOut)
+    {
+        <script src="~/js/signout-redirect.js"></script>
+    }
+    <!-- jQuery -->
+    <script src="~/adminLTE/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/adminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

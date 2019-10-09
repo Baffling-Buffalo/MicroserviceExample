@@ -1,0 +1,250 @@
+﻿[
+  {
+    "Id": 26,
+    "SuperiorId": 1,
+    "Description": "Prvi deo godišnjeg odmora",
+    "DescriptionForForm": "prvi deo godišnjeg odmora"
+  },
+  {
+    "Id": 27,
+    "SuperiorId": 1,
+    "Description": "Drugi deo godišnjeg odmora",
+    "DescriptionForForm": "drugi deo godišnjeg odmora"
+  },
+  {
+    "Id": 28,
+    "SuperiorId": 1,
+    "Description": "Ceo godišnji odmor",
+    "DescriptionForForm": "ceo godišnji odmor"
+  },
+  {
+    "Id": 92,
+    "SuperiorId": 1,
+    "Description": "Prekinut godišnji odmor",
+    "DescriptionForForm": "prekinut godišnji odmor"
+  },
+  {
+    "Id": 133,
+    "SuperiorId": 1,
+    "Description": "Nastavak prekinutog godišnjeg odmora",
+    "DescriptionForForm": "nastavak prekinutog godišnjeg odmora"
+  },
+  {
+    "Id": 141,
+    "SuperiorId": 1,
+    "Description": "Treći deo godišnjeg odmora",
+    "DescriptionForForm": "treći deo godišnjeg odmora"
+  },
+  {
+    "Id": 142,
+    "SuperiorId": 1,
+    "Description": "Četvrti deo godišnjeg odmora",
+    "DescriptionForForm": "četvrti deo godišnjeg odmora"
+  },
+  {
+    "Id": 16,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Porođaj supruge",
+    "DescriptionForForm": "zbog porođaja supruge",
+    "PreambleId": 1,
+    "RationaleId": 1
+  },
+  {
+    "Id": 22,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Zaštita i otklanjanje štetnih posledica u domaćinstvu prouzrokovanih elementarnim nepogodama",
+    "DescriptionForForm": "zbog zaštite i otklanjanja štetnih posledica u domaćinstvu prouzrokovanih elementarnim nepogodama",
+    "PreambleId": 2,
+    "MainTextId": 1,
+    "RationaleId": 1
+  },
+  {
+    "Id": 23,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Prvi dan krsne slave",
+    "DescriptionForForm": "zbog prvog dana krsne slave",
+    "PreambleId": 4,
+    "MainTextId": 2,
+    "RationaleId": 2
+  },
+  {
+    "Id": 57,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Upućivanje zaposlenog na rekreaciju i rehabilitaciju od strane Društva ili nadležnog Fonda",
+    "DescriptionForForm": "zbog upućivanja zaposlenog na rekreaciju i rehabilitaciju od strane Društva ili nadležnog Fonda",
+    "PreambleId": 3,
+    "MainTextId": 3,
+    "RationaleId": 3
+  },
+  {
+    "Id": 59,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Učestvovanje na radno proizvodnim, naučnim, kulturnim i sportskim takmičenjima od interesa za Društvo",
+    "DescriptionForForm": "zbog učestvovanja na radno proizvodnim, naučnim, kulturnim i sportskim takmičenjima od interesa za Društvo",
+    "PreambleId": 1,
+    "MainTextId": 2,
+    "RationaleId": 1
+  },
+  {
+    "Id": 65,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Polaganje stručnih i drugih ispita",
+    "DescriptionForForm": "zbog polaganja stručnih i drugih ispita",
+    "PreambleId": 1,
+    "MainTextId": 1,
+    "RationaleId": 1
+  },
+  {
+    "Id": 75,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Verski praznik",
+    "DescriptionForForm": "zbog verskog praznika",
+    "PreambleId": 4,
+    "MainTextId": 2,
+    "RationaleId": 2
+  },
+  {
+    "Id": 82,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo - Vojna vežba",
+    "DescriptionForForm": "zbog vojne vežbe",
+    "PreambleId": 1,
+    "MainTextId": 1,
+    "RationaleId": 1
+  },
+  {
+    "Id": 93,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Upućivanje na specijalistički pregled od strane Društva",
+    "DescriptionForForm": "zbog upućivanja na specijalistički pregled od strane Društva",
+    "PreambleId": 5,
+    "MainTextId": 2,
+    "RationaleId": 3
+  },
+  {
+    "Id": 102,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Stupanje zaposlenog u brak",
+    "DescriptionForForm": "zbog stupanja zaposlenog u brak",
+    "PreambleId": 1,
+    "MainTextId": 1,
+    "RationaleId": 1
+  },
+  {
+    "Id": 103,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Stupanje u brak dece zaposlenog",
+    "DescriptionForForm": "zbog stupanja u brak dece zaposlenog",
+    "PreambleId": 1,
+    "MainTextId": 1,
+    "RationaleId": 1
+  },
+  {
+    "Id": 104,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Porođaj kćeri ili snaje",
+    "DescriptionForForm": "zbog porođaja kćeri ili snaje",
+    "PreambleId": 1,
+    "MainTextId": 1,
+    "RationaleId": 1
+  },
+  {
+    "Id": 105,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Završavanje ličnih i porodičnih poslova",
+    "DescriptionForForm": "zbog završavanja ličnih i porodičnih poslova",
+    "PreambleId": 1,
+    "MainTextId": 2,
+    "RationaleId": 1
+  },
+  {
+    "Id": 106,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Preseljenje sopstvenog domaćinstva iz jednog u drugo naseljeno mesto",
+    "DescriptionForForm": "zbog preseljenja sopstvenog domaćinstva iz jednog u drugo naseljeno mesto",
+    "PreambleId": 1,
+    "MainTextId": 2,
+    "RationaleId": 1
+  },
+  {
+    "Id": 107,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Preseljenje sopstvenog domaćinstva u isto naseljeno mesto",
+    "DescriptionForForm": "zbog preseljenja sopstvenog domaćinstva u isto naseljeno mesto",
+    "PreambleId": 1,
+    "MainTextId": 2,
+    "RationaleId": 1
+  },
+  {
+    "Id": 108,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Regulisanje prava iz penzijskog osiguranja",
+    "DescriptionForForm": "zbog regulisanja prava iz penzijskog osiguranja",
+    "PreambleId": 1,
+    "MainTextId": 1,
+    "RationaleId": 1
+  },
+  {
+    "Id": 109,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Teža bolest člana uže porodice",
+    "DescriptionForForm": "zbog teže bolesti člana uže porodice",
+    "PreambleId": 1,
+    "MainTextId": 1,
+    "RationaleId": 1
+  },
+  {
+    "Id": 110,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Odlazak na lekarske preglede zaposlenog ili člana uže porodice",
+    "DescriptionForForm": "zbog odlaska na lekarske preglede zaposlenog ili člana uže porodice",
+    "PreambleId": 1,
+    "MainTextId": 1,
+    "RationaleId": 1
+  },
+  {
+    "Id": 111,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Dobrovoljno davanje krvi",
+    "DescriptionForForm": "zbog dobrovoljnog davanja krvi",
+    "PreambleId": 1,
+    "MainTextId": 2,
+    "RationaleId": 1
+  },
+  {
+    "Id": 112,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Smrt člana uže porodice",
+    "DescriptionForForm": "zbog smrti člana uže porodice",
+    "PreambleId": 1,
+    "MainTextId": 1,
+    "RationaleId": 1
+  },
+  {
+    "Id": 134,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo-Odazivanje na poziv državnih organa",
+    "DescriptionForForm": "zbog odazivanja na poziv državnih organa",
+    "PreambleId": 1,
+    "MainTextId": 2,
+    "RationaleId": 1
+  },
+  {
+    "Id": 136,
+    "SuperiorId": 2,
+    "Description": "Oslobađanje od obaveze obavljanja redovnih radnih aktivnosti po naredbi nadležnog državnog organa ili nadležnog organa Društva",
+    "DescriptionForForm": "zbog oslobađanja od obaveza obavljanja redovnih radnih aktivnosti po naredbi nadležnog državnog organa ili nadležnog organa Društva",
+    "PreambleId": 1,
+    "MainTextId": 1,
+    "RationaleId": 1
+  },
+  {
+    "Id": 150,
+    "SuperiorId": 2,
+    "Description": "Plaćeno odsustvo – Po ugovoru o radu",
+    "DescriptionForForm": "po ugovoru o radu",
+    "PreambleId": 1,
+    "MainTextId": 1,
+    "RationaleId": 1
+  }
+]

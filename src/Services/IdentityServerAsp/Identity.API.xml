@@ -1,0 +1,422 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Identity.API</name>
+    </assembly>
+    <members>
+        <member name="M:Identity.API.Controllers.GroupController.GetGroups">
+            <summary>
+            Get all user groups
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.API.Controllers.GroupController.GetGroup(System.Int32)">
+            <summary>
+            Get group with specific id
+            </summary>
+            <param name="id">Group id</param>
+            <returns></returns>
+            <response code="400">Group with id not found</response>
+        </member>
+        <member name="M:Identity.API.Controllers.GroupController.GetGroupsForComboTree(System.String)">
+            <summary>
+            Gets groups formatted for combotree plugin
+            </summary>
+            <param name="ids">Ids of groups you want to get</param>
+            <returns></returns>
+            <response code="400">Group with id not found</response>
+        </member>
+        <member name="M:Identity.API.Controllers.GroupController.GetGroupsForDatatable(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.String}},System.Int32)">
+            <summary>
+            Get groups formatted for datatable
+            </summary>
+            <param name="parentGroupId">Id of group whos children you want to get</param>
+            <returns></returns>
+            <response code="400">Group with id not found</response>
+        </member>
+        <member name="M:Identity.API.Controllers.GroupController.GetChildGroups(System.Int32)">
+            <summary>
+            Get child groups of a group
+            </summary>
+            <param name="id">Parent group id</param>
+            <returns></returns>
+            <response code="400">Group with id not found</response>
+            <response code="204">Group has no child groups</response>
+        </member>
+        <member name="M:Identity.API.Controllers.GroupController.GetUsersInGroup(System.Int32)">
+            <summary>
+            Get users in group
+            </summary>
+            <param name="id">Group id</param>
+            <returns></returns>
+            <response code="400">Group with id not found</response>
+            <response code="204">Group has no users in it</response>
+        </member>
+        <member name="M:Identity.API.Controllers.GroupController.GetGroupsOfUser(System.String)">
+            <summary>
+            Get groups user is in
+            </summary>
+            <param name="id">User id</param>
+            <returns></returns>
+            <response code="400">User with id not found</response>
+            <response code="204">User isn't in any group</response>
+        </member>
+        <member name="M:Identity.API.Controllers.GroupController.CreateGroup(Identity.API.DTO.NewGroupDTO)">
+            <summary>
+            Create new group
+            </summary>
+            <param name="model"></param>
+            <returns>Created group Id</returns>
+            <response code="400">Parent group not found</response>
+            <response code="201">Group created - returns group id</response>
+        </member>
+        <member name="M:Identity.API.Controllers.GroupController.AddUsersToGroups(Identity.API.DTO.UsersGroupsIdsDTO)">
+            <summary>
+            Adds users to groups
+            </summary>
+            <param name="model">User ids and Group ids</param>
+            <returns></returns>
+            <response code="400">User or group not found</response>
+            <response code="200">Users added to groups</response>
+        </member>
+        <member name="M:Identity.API.Controllers.GroupController.RemoveUsersFromGroups(Identity.API.DTO.UsersGroupsIdsDTO)">
+            <summary>
+            Adds users to groups
+            </summary>
+            <param name="model">User ids and Group ids</param>
+            <returns></returns>
+            <response code="400">User or group not found</response>
+            <response code="200">Users added to groups</response>
+        </member>
+        <member name="M:Identity.API.Controllers.GroupController.EditGroup(Identity.API.DTO.UpdateGroupDTO)">
+            <summary>
+            Edit group
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            /// <response code="200">Group updated</response>
+            <response code="400">Couldn't find group with given id</response>
+            <response code="409">Group with given name already exists</response>
+        </member>
+        <member name="M:Identity.API.Controllers.GroupController.RemoveGroups(System.Int32[],System.Boolean)">
+            <summary>
+            Delete Groups
+            </summary>
+            <param name="ids">Ids of groups to be deleted</param>
+            <returns></returns>
+            /// <response code="204">Successfully deleted</response>
+            <response code="400">Couldn't find group with given id</response>
+        </member>
+        <member name="M:Identity.API.Controllers.UserController.Get(Identity.API.Data.ApplicationDbContext,System.Nullable{System.Boolean},System.Int32[],System.String[],System.String)">
+            <summary>
+            Gets all users (active and/or locked)
+            </summary>
+            <returns>List of ApplicationUsers</returns>
+            <param name="lockedUsers">True - get only locked users, False - get only active users and (default)Null - get all</param>
+            <param name="groupIds">Ids of groups from which you want to get users</param>
+            <param name="roleIds">Ids of roles from which you want to get users</param>
+        </member>
+        <member name="M:Identity.API.Controllers.UserController.GetForDatatable(Identity.API.Data.ApplicationDbContext,Identity.API.DTO.UsersForDatatableDTO)">
+            <summary>
+            Gets users sorted and formated for datatable
+            </summary>
+            <returns></returns>
+            <param name="model">Model with parameters</param>
+        </member>
+        <member name="M:Identity.API.Controllers.UserController.GetUser(System.String)">
+            <summary>
+            Gets user with passed id
+            </summary>
+            <param name="id">User id</param>
+            <returns>ApplicationUser</returns>
+            <response code="400">User with passed id not found</response>
+        </member>
+        <member name="M:Identity.API.Controllers.UserController.GetUsersWithIds(System.String[])">
+            <summary>
+            Gets users with passed ids
+            </summary>
+            <param name="ids">User ids</param>
+            <returns>ApplicationUsers</returns>
+            <response code="400">Users with passed ids not found</response>
+        </member>
+        <member name="M:Identity.API.Controllers.UserController.CreateUser(Identity.API.DTO.NewApplicationUserDTO)">
+            <summary>
+            Create new user
+            </summary>
+            <param name="model">NewApplicationUserDTO</param>
+            <returns>Created user Id</returns>
+            <response code="201">User created</response>
+            <response code="400">User with that name or email already exists</response>
+            <response code="409">Username/Email is already in use</response>
+        </member>
+        <member name="M:Identity.API.Controllers.UserController.UpdateUser(Identity.API.DTO.UpdateApplicationUserDTO)">
+            <summary>
+            Update user info
+            </summary>
+            <param name="model">UpdateApplicationUserDTO</param>
+            <returns></returns>
+            <response code="204">User updated</response>
+            <response code="400">Couldn't find user with given id</response>
+            <response code="409">New Username/Email is already in use</response>
+        </member>
+        <member name="M:Identity.API.Controllers.UserController.DeleteUsers(System.String[],Identity.API.Data.ApplicationDbContext)">
+            <summary>
+            Delete user
+            </summary>
+            <param name="id">User Id</param>
+            <returns></returns>
+            /// <response code="204">Successfully deleted user</response>
+            <response code="400">Couldn't find user with given id</response>
+        </member>
+        <member name="M:Identity.API.Controllers.UserController.LockoutUsers(Identity.API.DTO.LockUsersDTO,Identity.API.Data.ApplicationDbContext)">
+            <summary>
+            Lockout user
+            </summary>
+            <param name="id">User Id</param>
+            <returns></returns>
+            /// <response code="204">User successfully locked out</response>
+            <response code="400">Couldn't find user with given id</response>
+        </member>
+        <member name="M:Identity.API.Controllers.UserController.UnlockUsers(System.String[],Identity.API.Data.ApplicationDbContext)">
+            <summary>
+            Lockout user
+            </summary>
+            <param name="id">User Id</param>
+            <returns></returns>
+            /// <response code="204">User successfully locked out</response>
+            <response code="400">Couldn't find user with given id</response>
+        </member>
+        <member name="M:Identity.API.Controllers.UserController.IsUnique(System.String,System.String)">
+            <summary>
+            Checks if all given properties are unique and sets ModelStateErrors for those who aren't
+            </summary>
+            <param name="username"></param>
+            <param name="email"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.API.Quickstart.Account.RoleController.Get">
+            <summary>
+            Gets all roles
+            </summary>
+            <returns>All roles</returns>
+        </member>
+        <member name="M:Identity.API.Quickstart.Account.RoleController.GetRolesForDataTable">
+            <summary>
+            Roles formated for datatable
+            </summary>
+            <returns>Datatable formated object with roles</returns>
+        </member>
+        <member name="M:Identity.API.Quickstart.Account.RoleController.GetRolesWithIds(System.String[])">
+            <summary>
+            Gets roles by ids
+            </summary>
+            <param name="ids">Array of string ids</param>
+            <returns>RoleDTOs found by ids</returns>
+            <response code="400">Couldn't find any role with given ids</response>
+        </member>
+        <member name="M:Identity.API.Quickstart.Account.RoleController.GetRolesOfUser(System.String,Microsoft.AspNetCore.Identity.UserManager{Identity.API.Models.ApplicationUser})">
+            <summary>
+            Gets roles of the user
+            </summary>
+            <param name="userId">Id of the user you want to get roles from</param>
+            <returns>Roles attached to the user</returns>
+            <response code="400">Couldn't find user with given id</response>
+            <response code="204">User has no roles</response>
+        </member>
+        <member name="M:Identity.API.Quickstart.Account.RoleController.GetUsersInRole(System.String,Microsoft.AspNetCore.Identity.UserManager{Identity.API.Models.ApplicationUser})">
+            <summary>
+            Get users in group
+            </summary>
+            <param name="id">Group id</param>
+            <returns></returns>
+            <response code="400">Role with id not found</response>
+            <response code="204">Role has no users in it</response>
+        </member>
+        <member name="M:Identity.API.Quickstart.Account.RoleController.CreateRole(Identity.API.DTO.NewRoleDTO)">
+            <summary>
+            Create new role
+            </summary>
+            <param name="name">Name of the role</param>
+            <returns>Created role id</returns>
+            <response code="201">Role created</response>
+            <response code="409">Role with that name already exists</response>
+        </member>
+        <member name="M:Identity.API.Quickstart.Account.RoleController.UpdateRole(Identity.API.DTO.RoleDTO)">
+            <summary>
+            Update role name
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            /// <response code="200">Role updated</response>
+            <response code="400">Couldn't find role with given id</response>
+            <response code="409">Role with given name already exists</response>
+        </member>
+        <member name="M:Identity.API.Quickstart.Account.RoleController.RemoveRoles(System.String[])">
+            <summary>
+            Delete role
+            </summary>
+            <param name="ids"></param>
+            <returns></returns>
+            /// <response code="204">Successfully deleted</response>
+            <response code="400">Couldn't find role with given id</response>
+        </member>
+        <member name="M:Identity.API.Quickstart.Account.RoleController.AddUsersToRoles(Identity.API.DTO.UsersRolesIdsDTO,Microsoft.AspNetCore.Identity.UserManager{Identity.API.Models.ApplicationUser})">
+            <summary>
+            Adds users to roles
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            <response code="200">Added successfully</response>
+            <response code="400">Some user or role not found</response>
+        </member>
+        <member name="M:Identity.API.Quickstart.Account.RoleController.RemoveUsersFromRoles(Identity.API.DTO.UsersRolesIdsDTO,Microsoft.AspNetCore.Identity.UserManager{Identity.API.Models.ApplicationUser})">
+            <summary>
+            Remove users from roles
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            /// <response code="200">Removed successfully</response>
+            <response code="400">Some user or role not found</response>
+        </member>
+        <member name="P:Identity.API.DTO.UsersForDatatableDTO.DtParameters">
+            <summary>
+            Paremeters send by datatable lib as form params when triggering ajax call
+            </summary>
+        </member>
+        <member name="P:Identity.API.DTO.UsersForDatatableDTO.Locked">
+            <summary>
+            True - get only locked users, False - get only active users and (default)Null - get all
+            </summary>
+        </member>
+        <member name="P:Identity.API.DTO.UsersForDatatableDTO.GroupIds">
+            <summary>
+            Ids of groups from which you want to get users
+            </summary>
+        </member>
+        <member name="P:Identity.API.DTO.UsersForDatatableDTO.RoleIds">
+            <summary>
+            Ids of roles from which you want to get users
+            </summary>
+        </member>
+        <member name="M:Identity.Extensions.Extensions.IsPkceClientAsync(IdentityServer4.Stores.IClientStore,System.String)">
+            <summary>
+            Determines whether the client is configured to use PKCE.
+            </summary>
+            <param name="store">The store.</param>
+            <param name="client_id">The client identifier.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.Extensions.Extensions.ContainsAllItems``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            See if this enumeration has all items in passed enumeration. Returns true if passed enum is empty.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.Extensions.Extensions.ContainsAllItems``1(System.Collections.Generic.IAsyncEnumerable{``0},System.Collections.Generic.IAsyncEnumerable{``0})">
+            <summary>
+            See if this enumeration has all items in passed enumeration. Returns true if passed enum is empty.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.Extensions.Extensions.ContainsAllItems``1(System.Collections.Generic.IAsyncEnumerable{``0},System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            See if this enumeration has all items in passed enumeration. Returns true if passed enum is empty.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.Extensions.Extensions.ContainsAllItems``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IAsyncEnumerable{``0})">
+            <summary>
+            See if this enumeration has all items in passed enumeration. Returns true if passed enum is empty.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Identity.Extensions.Extensions.ContainsAllItems``1(System.Collections.Generic.List{``0},System.Collections.Generic.List{``0})">
+            <summary>
+            See if this enumeration has all items in passed enumeration. Returns true if passed enum is empty.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="a"></param>
+            <param name="b"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.AccountController.Login(System.String)">
+            <summary>
+            Entry point into the login workflow
+            </summary>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.AccountController.Login(IdentityServer4.Quickstart.UI.LoginInputModel,System.String)">
+            <summary>
+            Handle postback from username/password login
+            </summary>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.AccountController.Logout(System.String)">
+            <summary>
+            Show logout page
+            </summary>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.AccountController.Logout(IdentityServer4.Quickstart.UI.LogoutInputModel)">
+            <summary>
+            Handle logout page postback
+            </summary>
+        </member>
+        <member name="T:IdentityServer4.Quickstart.UI.ConsentController">
+            <summary>
+            This controller processes the consent UI
+            </summary>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.ConsentController.Index(System.String)">
+            <summary>
+            Shows the consent screen
+            </summary>
+            <param name="returnUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.ConsentController.Index(IdentityServer4.Quickstart.UI.ConsentInputModel)">
+            <summary>
+            Handles the consent screen postback
+            </summary>
+        </member>
+        <member name="T:IdentityServer4.Quickstart.UI.GrantsController">
+            <summary>
+            This sample controller allows a user to revoke grants given to clients
+            </summary>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.GrantsController.Index">
+            <summary>
+            Show list of grants
+            </summary>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.GrantsController.Revoke(System.String)">
+            <summary>
+            Handle postback to revoke a client
+            </summary>
+        </member>
+        <member name="M:IdentityServer4.Quickstart.UI.HomeController.Error(System.String)">
+            <summary>
+            Shows the error page
+            </summary>
+        </member>
+        <member name="M:Host.Quickstart.Account.ExternalController.Challenge(System.String,System.String)">
+            <summary>
+            initiate roundtrip to external authentication provider
+            </summary>
+        </member>
+        <member name="M:Host.Quickstart.Account.ExternalController.Callback">
+            <summary>
+            Post processing of external authentication
+            </summary>
+        </member>
+    </members>
+</doc>

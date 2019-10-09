@@ -1,0 +1,44 @@
+﻿@model IEnumerable<WebMVC.ViewModels.FormGroup.GroupTreeNode>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles{
+    <link href="~/lib/jquery-treetable/jquery-treetable.css" rel="stylesheet" />
+}
+
+<partial name="_ModalPartial.cshtml" />
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">@SharedLocalizer["Form groups"]</h3>
+    </div>
+    <div class="card-body">
+        <a asp-action="Create"  asp-authorize asp-claims="formGroup_create" class="btn btn-primary btn-sm">@SharedLocalizer["Create"]</a>
+        <button type="button" id="btnDelete" asp-authorize asp-claims="formGroup_delete" class="btn btn-danger btn-sm">@SharedLocalizer["Delete"]</button>
+        <hr />
+        <table id="groupsTable" class="table">
+            <thead>
+                <tr>
+                    <th style="display:none;"></th>
+                    <th style="width:400px;">@SharedLocalizer["Group name"]</th>
+                    <th>@SharedLocalizer["Description"]</th>
+                    <th>@SharedLocalizer["Forms"]</th>
+                    <th>@SharedLocalizer["Actions"]</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/jquery-treetable/jquery-treetable.js"></script>
+    <script src="~/js/formGroup/formGroup.index.js"></script>
+    <script>
+        group.claims({ update: "@User.HasActionClaims("formGroup_update")" });
+        group.localization({ update: "@SharedLocalizer["Update"]", details: "@SharedLocalizer["Details"]", toastr: { selectAtLeastOneGroupMessage: "@Localizer["Please select at least one group for this action"]" } });
+        group.treeTableInit(@Html.Raw(Json.Serialize(Model)));
+    </script>
+}

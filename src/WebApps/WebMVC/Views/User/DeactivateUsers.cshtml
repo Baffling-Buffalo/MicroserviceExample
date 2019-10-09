@@ -1,0 +1,56 @@
+﻿@*@section Styles{
+    <link href="~/adminlte/plugins/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/air-datepicker/css/datepicker.min.css" rel="stylesheet" />
+}
+@{
+    ViewData["Title"] = Localizer["Deactivate Users"];
+    ViewData["PageTitle"] = Localizer["Deactivate Users"];
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="DeactivateUsersSubmit" class="getGroups">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="UserIds" class="control-label"></label>
+                <select asp-items="@ViewBag.UserSelectItems" asp-for="UserIds" class="select2 form-control" multiple="multiple" data-placeholder="@Localizer["Select users"]"
+                        style="width: 100%;"></select>
+                <span asp-validation-for="UserIds" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="icheck-primary">
+                    <input type="checkbox">
+                    <label>
+                        @Localizer["Deactivate To Date:"]
+                    </label>
+                </div>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="far fa-calendar-alt"></i>
+                        </span>
+                    </div>
+                    <input type="text" asp-for="LockUntil" class="form-control float-right datepicker-here" data-timepicker="true" data-startTime="00:00:00" data-language='@(AppSettings.Value.DatepickerCulture)' autocomplete="off">
+                </div>
+                <span asp-validation-for="LockUntil" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-default">@SharedLocalizer["Cancel"]</a>
+                <button class="btn btn-primary">@Localizer["Deactivate"]</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/adminlte/plugins/select2/js/select2.full.min.js"></script>
+    <script src="~/lib/air-datepicker/js/datepicker.min.js"></script>
+    <script src="~/lib/air-datepicker/js/i18n/datepicker.@(AppSettings.Value.DatepickerCulture).js"></script>
+
+    <script>
+        $(function () {
+            $(".select2").select2();
+        })
+    </script>
+}*@

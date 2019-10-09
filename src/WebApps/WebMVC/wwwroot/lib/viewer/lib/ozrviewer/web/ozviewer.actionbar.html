@@ -1,0 +1,43 @@
+
+<div class="row">
+<script>
+
+		var isTotoFramework = navigator.userAgent.match("OZTotoFramework"); //  easier to verify when debugging from pc browser
+		if(isTotoFramework) {
+	
+			$("#page-wrapper").css("margin-left", "0px");
+			$("#iFOZViewer").css("width", "100%");
+			$(".navbar-default").css("width", "100%");
+			//document.getElementById("iFOZViewer").style.width = "0px";
+			//document.getElementById("page-wrapper").style.marginLeft = "0px";
+		}
+	
+</script>
+    <div class="col-sm-12">
+        <div class="input-group text-right">
+			<span class="input-group-btn" style='padding-left: 5px;'>
+				<button ng-if="showPreview && !completeNo" class="btn btn-sm btn-warning" ngclipboard data-clipboard-text="{{shareLink}}" ng-click="$ctrl.copyClipboard()" ><i class="fa fa-share-square-o" aria-hidden="true"></i></button>
+				<button ng-if="showSubmitFormEmail" type="button" class="btn btn-sm btn-info" ng-click="$ctrl.submitWithFormEmail()"><strong> {{ textSubmitFormEmail || 'Send' }} </strong></button>
+				<!--<button ng-if="showSubmitWithExistingEmail" type="button" class="btn btn-sm btn-danger" ng-click="$ctrl.submitWithExistingEmail()"><strong> {{ textSubmitWithExistingEmail || 'Submit' }} </strong></button>-->
+				<button ng-if="showRegisterCustomer" type="button" class="btn btn-sm btn-info" ng-click="doRegisterCustomer()"><strong> {{ textRegisterCustomer || 'Register' }} </strong></button>
+				<button ng-if="showSubmitAll && !showSubmitSingle" type="button" class="btn btn-sm btn-danger" ng-click="$ctrl.submitAll()"><strong> {{ textSubmitAll || 'Submit' }} </strong> </button>
+				<button ng-if="showSendMultiEmailInputType" type="button" class="btn btn-sm btn-info" ng-click="$ctrl.sendMultiEmailInputType('mail')"><strong>{{ textSendMultiEmailInputType || 'Send' }}</strong></button>
+				<button ng-if="showSubmitMultiEmailInputType" type="button" class="btn btn-sm btn-danger" ng-click="$ctrl.sendMultiEmailInputType('submit')"><strong>{{ textSubmitMultiEmailInputType || 'Submit' }}</strong></button>
+			
+
+				<!--COMPLETED FORMS-->
+				<button ng-if="showSubmitWithExistingEmail" type="button" class="btn btn-sm btn-danger" ng-click="$ctrl.submitReportSuccess()"><strong> {{ textSubmitSingle || 'Submit Changes' }} </strong> </button>
+				<button ng-if="showSubmitWithExistingEmail" type="button" class="btn btn-sm btn-danger" ng-click="$ctrl.submitReport()"><strong> {{ textSubmitWithExistingEmail || 'Submit - Send Doc' }} </strong></button>
+				<!--<button ng-if="showSubmitWithExistingEmail" type="button" class="btn btn-sm btn-info" ng-click="$ctrl.sendEmail()"><strong> {{ textSendEmail || 'Send  (Complete False)' }} </strong></button>
+				<!--<button ng-if="showSubmitSingle" type="button" class="btn btn-sm btn-danger" ng-click="$ctrl.submitReport()"><strong> {{ textSubmitSingle || 'Submit (Complete True)' }} </strong> </button>-->
+				
+				
+				<!--MY FORMS-->
+				<button ng-if="showSubmitSingle" type="button" class="btn btn-sm btn-info" ng-click="$ctrl.startMultiScreen()"><strong> {{ textSubmitSingle || 'Start Multiscreen' }} </strong> </button>
+				<button ng-if="showSubmitSingle" type="button" class="btn btn-sm btn-danger" ng-click="$ctrl.submitReportDocName()"><strong> {{ textSubmitSingle || 'Submit - Doc Name' }} </strong> </button>
+				
+			</span>
+			
+        </div>
+    </div>
+</div>

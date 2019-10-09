@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<partial name="_ModalPartial.cshtml" />
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">@SharedLocalizer["Contacts"]</h3>
+    </div>
+    <div class="card-body">
+        <a asp-action="Create" asp-authorize asp-claims="@Permissions.ContactCreate" class="btn btn-primary btn-sm">@SharedLocalizer["Create"]</a>
+        <button asp-authorize asp-claims="@Permissions.ContactDelete" type="button" id="btnDelete" class="btn btn-danger btn-sm">@SharedLocalizer["Delete"]</button>
+
+        <div class="btn-group">
+            <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                @SharedLocalizer["Manage"]<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li asp-authorize asp-claims="@Permissions.AddContactToList">
+                    <form asp-controller="Contact" asp-action="AddToLists" method="get" class="getContactsBeforeSubmit">
+                        <button type="submit" class="dropdown-item">@Localizer["Add to lists"]</button>
+                    </form>
+                </li>
+                <li asp-authorize asp-claims="@Permissions.RemoveContactFromList">
+                    <form asp-controller="Contact" asp-action="RemoveFromLists" method="get" class="getContactsBeforeSubmit">
+                        <button type="submit" class="dropdown-item">@Localizer["Remove from lists"]</button>
+                    </form>
+                </li>
+                @*<li class="dropdown-divider"></li>
+                <li>
+                    <button type="button" id="btnActivate" class="dropdown-item">@SharedLocalizer["Activate"]</button>
+                </li>
+                <li>
+                    <button type="button" id="btnDeactivate" class="dropdown-item">@SharedLocalizer["Deactivate"]</button>
+                </li>*@
+            </ul>
+        </div>
+
+        <hr />
+
+        <!--Filter row-->
+        <div class="row mb-2">
+            <div class="col-lg-3 col-md-3 col-sm-6">
+                <comboTree asp-authorize asp-claims="@Permissions.ListRead" 
+                    action="GetListsForComboTreePlugin"
+                    controller="List"
+                    comboTreeObjVar="listTreeFilter"
+                    isMultiselect="true"
+                    placeholder="@SharedLocalizer["Lists"]"
+                    showMaxItems="2" small="true"
+                    selectionCallback="contact.datatableRefresh">
+                </comboTree>
+            </div>
+            <div class="offset-lg-7 col-lg-2 offset-md-7 col-md-3 offset-6 col-6">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="activeContactsSwitch" onchange="contact.datatableRefresh()" checked="checked" />
+                    <label class="custom-control-label" for="activeContactsSwitch">Active</label>
+                </div>
+            </div>
+        </div>
+
+        <table id="dtContacts" class="table table-hover" style="width:100%;">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>@SharedLocalizer["First name"]</th>
+                    <th>@SharedLocalizer["Last name"]</th>
+                    <th>@SharedLocalizer["E-mail"]</th>
+                    <th>@SharedLocalizer["Phone number"]</th>
+                    <th>@SharedLocalizer["Lists"]</th>
+                    <th>@SharedLocalizer["Status"]</th>
+                    <th>@SharedLocalizer["Actions"]</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/js/contact/contact.index.js"></script>
+    <script>
+        contact.localization({ update: "@SharedLocalizer["Update"]", details: "@SharedLocalizer["Details"]", toastr: { selectAtLeastOneContactMessage: "@Localizer["Please select at least one contact for this action"]" } });
+        contact.datatableInit("@Url.Action("GetContactsForDataTable", "Contact")");
+        contact.claims({ update: "@User.HasActionClaims(Permissions.ContactUpdate)" });
+    </script>
+
+}

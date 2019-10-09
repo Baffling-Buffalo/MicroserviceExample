@@ -1,0 +1,36 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">Please enter email address you want to send</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form">
+            <md-radio-group ng-model="input.type">
+
+                <md-radio-button ng-if="showFormEmail" value="formEmail" ><label class="control-label">Email in Form</label></md-radio-button>
+                <md-radio-button ng-if="showCustomEmail" value="customEmail"><label class="control-label">Email</label></md-radio-button>
+                <div class="col-sm-offset-2" ng-show="input.type==='customEmail'">
+                    <input type="email" class="form-control" ng-model="input.email" placeholder="Email"/>
+                </div>
+                <md-radio-button ng-if="showSMS" value="SMS" disabled><label class="control-label">SMS</label></md-radio-button>
+                <div class="col-sm-offset-2" >
+                    <input type="email" ng-disabled="input.type!=='SMS'" class="form-control" ng-model="input.phoneNo" placeholder="Phone Number"/>
+                </div>
+
+            </md-radio-group>
+
+            <!--<input ng-if="showFormEmail" type="radio" ng-model="inputType" value="formEmail">Email From Form <br/>-->
+            <!--<input ng-if="showCustomEmail" type="radio" ng-model="inputType" value="customEmail">Custom Email <br/>-->
+            <!--<div ng-show="inputType === 'customEmail'" class="form-group">-->
+                <!--<label class="col-sm-2 control-label">Email</label>-->
+                <!--<input type="email" class="form-control" ng-model="mail.address" placeholder="Email"/>-->
+            <!--</div>-->
+            <!--<input ng-if="showSMS" type="radio" ng-model="inputType" value="SMS" disabled>SMS-->
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-info" ng-click="$ctrl.ok()">Send</button>
+        <button class="btn btn-danger" type="button"
+                ng-click="$ctrl.cancel()">Cancel
+        </button>
+    </div>
+</div>

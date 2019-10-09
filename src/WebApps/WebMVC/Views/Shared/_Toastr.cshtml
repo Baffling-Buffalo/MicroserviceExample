@@ -1,0 +1,61 @@
+﻿<script>
+
+    function showToastr(type, message) {
+        switch (type) {
+            case ("Success"):
+                toastr.success(message);
+                break;
+            case ("Info"):
+                toastr.info(message);
+                break;
+            case ("Error"):
+                toastr.error(message);
+                break;
+            case ("Warning"):
+                toastr.warning(message);
+                break;
+            default:
+                break;
+        }
+    };
+
+    // Script to make toast popups by passing TempData.Toast or TempData.Toasts to View
+    $(function () {
+        @{
+            List<string> type = new List<string>();
+            List<string> message = new List<string>();
+            List<Toast> toasts = TempData.Get<List<Toast>>("Toasts");
+            Toast toast = TempData.Get<Toast>("Toast");
+
+            if (toasts == null)
+            {
+                toasts = new List<Toast>();
+            }
+
+            if (toast != null)
+            {
+                toasts.Add(toast);
+            }
+
+            if (toasts != null)
+            {
+                foreach (var item in toasts)
+                {
+                    type.Add(item.Type);
+                    message.Add(item.Message);
+                }
+            }
+        }
+        var type = [];
+        var message = [];
+        type = @Html.Raw(Json.Serialize(type));
+        message = @Html.Raw(Json.Serialize(message));
+
+        if (type.length==0)
+            return;
+
+        for (var i = 0; i < type.length; i++) {
+            showToastr(type[i],message[i])
+        }
+    })
+</script>

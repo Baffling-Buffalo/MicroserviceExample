@@ -1,0 +1,25 @@
+﻿[
+  {
+    //za sve ostale
+    "Id": 1,
+    "Text": "<IME_I_PREZIME>, ID <RADBR>, <ZAPOSLEN> u Preduzeću za telekomunikacije \"Telekom Srbija\" a.d., <NAZIV_OJ>, na radnom mestu <NAZIV_RM>, ima pravo na plaćeno odsustvo u trajanju od <BR_DANA> <RAD> dana <RAD_OD_DO>, <PO_OPIS>.\n<IMENOVAN> treba da se javi na rad <DATUM_JAVLJANJA_NA_POSAO> godine.\n\nZa vreme korišćenja plaćenog odsustva <ZAPOSLEN> ima pravo na naknadu zarade shodno odredbama Kolektivnog ugovora Društva.\n\n<IMENOVAN> je u obavezi da u roku od pet dana od povratka na posao dostavi potrebnu dokumentaciju.\n\nOvo rešenje je konačno."
+  },
+  {
+    //1.Zavrsavanje licnih i porodicnih poslova
+		//2.Preseljenje sopstvenog domacinstva u isto naseljeno mesto
+		//3.Preseljenje sopstvenog domacinstva iz jednog u drugo naseljeno mesto
+	  //4.Odaziv na poziv drzavnih organa
+		//5.Dobrovoljno davanje krvi
+		//6.Ucestvovanje na radno proizvodnim, naucnim, kulturnim i sportskim takmicenjima od interesa za Drustvo
+		//7.Prvi dan krsne slave
+		//8.Verski praznik
+	  //9.Upucivanje na specijalisticki pregled od strane Drustva
+    "Id": 2,
+    "Text": "<IME_I_PREZIME>, ID <RADBR>, <ZAPOSLEN> u Preduzeću za telekomunikacije \"Telekom Srbija\" a.d., <NAZIV_OJ>, na radnom mestu <NAZIV_RM>, ima pravo na plaćeno odsustvo u trajanju od <BR_DANA> <RAD> dana <RAD_OD_DO>, <PO_OPIS>.\n<IMENOVAN> treba da se javi na rad <DATUM_JAVLJANJA_NA_POSAO> godine.\n\nZa vreme korišćenja plaćenog odsustva <ZAPOSLEN> ima pravo na naknadu zarade shodno odredbama Kolektivnog ugovora Društva.\n\nOvo rešenje je konačno."
+  },
+  {
+    //Plaćeno odsustvo-Upućivanje zaposlenog na rekreaciju i rehabilitaciju od strane Društva ili nadležnog Fonda
+    "Id": 3,
+    "Text": "<IME_I_PREZIME>, ID <RADBR>, <ZAPOSLEN> u Preduzeću za telekomunikacije \"Telekom Srbija\" a.d., <NAZIV_OJ>, na radnom mestu <NAZIV_RM>, ima pravo na plaćeno odsustvo u trajanju od <BR_DANA> <RAD> dana <RAD_OD_DO>, <PO_OPIS>.\n<IMENOVAN> treba da se javi na rad <DATUM_JAVLJANJA_NA_POSAO> godine.\n\nU slučaju da zaposleni iz bilo kog razloga prekine korišćenje zdravstvene rehabilitacije/rekreacije, u obavezi je da narednog dana stupi na rad, kao i o razlozima zbog kojih je prekinuo korišćenje prava, pisanim putem obavesti rukovodioca organizacione celine u kojoj je raspoređen ugovorom o radu i nadležnu službu ljudskih resursa.\n\nZa vreme korišćenja plaćenog odsustva <ZAPOSLEN> ima pravo na naknadu zarade shodno odredbama Kolektivnog ugovora Društva.\n\nOvo rešenje je konačno."
+  }
+]

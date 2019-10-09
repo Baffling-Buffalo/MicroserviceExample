@@ -1,0 +1,117 @@
+﻿@model WebMVC.ViewModels.Role.RoleViewModel
+@{
+    ViewData["Title"] = Localizer["Create Role"];
+}
+@section styles{
+    <link href="https://cdn.datatables.net/rowgroup/1.1.0/css/rowGroup.dataTables.min.css" rel="stylesheet" />
+}
+<form asp-action="Create" asp-antiforgery="true" class="getActionsBeforeSubmit">
+    <card title="@Localizer["Create Role"].Value">
+        <card-body>
+            <div class="row">
+                <div class="col-12">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" optional class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .dataTables_wrapper table thead, .dtr-title {
+                    display: none !important;
+                }
+            </style>
+            <label asp-for="RoleActions" class="control-label"></label>
+            <span asp-validation-for="RoleActions" class="text-danger"></span>
+            <table id="dtActions" class="table table-hover" style="width:100%;"></table>
+            <div class="form-group">
+
+            </div>
+        </card-body>
+        <card-footer>
+            <a asp-action="Index" class="btn btn-default">@SharedLocalizer["Cancel"]</a>
+            <input type="submit" value="@SharedLocalizer["Create"]" class="btn btn-primary" style="float:right"/>
+        </card-footer>
+    </card>
+</form>
+
+@section scripts {
+    <script src="https://cdn.datatables.net/rowgroup/1.1.0/js/dataTables.rowGroup.min.js"></script>
+    <script>
+        var selectedActions = @Json.Serialize(Model.RoleActions);
+
+        $(function () {
+            userTable = $('#dtActions').DataTable({
+                searching: false,
+                ordering: false,
+                paging: false,
+                bInfo: false,
+                ajax: {
+                    type: "GET",
+                    url: "/Role/RoleActions",
+                    dataSrc: ""
+                },
+                responsive: {
+                    details: {
+                        type: 'column',
+                        target: 0
+                    }
+                },
+                rowGroup: {
+                    dataSrc: 'Context'
+                },
+                columnDefs: [
+                    { targets: [0], data: null, className: 'control', defaultContent: '', orderable: false, searchable: false, },
+                    { targets: [1], data: 'Name' },
+                    {
+                        targets: [2],
+                        class: 'none',
+                        mData: function (d) {
+                            var html = "";
+                            for (var i = 0; i < d.PermissionNames.length; i++) {
+                                var checked = "";
+                                if (selectedActions != null && selectedActions.length > 0 && selectedActions.includes(d.PermissionClaimValues[i])) {
+                                    checked = "checked";
+                                }
+                                html += `<div>
+                                            <label for="${d.Name.replace(/\s+/g, '')}RoleAction${i}">
+                                                <input type="checkbox" onClick="actionSelection(this)" class="actionCheckbox" id="${d.Name.replace(/\s+/g, '')}RoleAction${i}" value="${d.PermissionClaimValues[i]}" ${checked}/>
+                                            ${d.PermissionNames[i]}</label>
+                                    </div>`;
+                            }
+                            return html;
+                        },
+                    }
+                ]
+            });
+        })
+
+        function actionSelection(obj) {
+            if ($(obj).is(":checked")) {
+                selectedActions.push($(obj).val());
+            }
+            else {
+                var index = selectedActions.indexOf($(obj).val());
+                selectedActions.splice(index, 1)
+            }
+        }
+
+        $(".getActionsBeforeSubmit").submit(function () {
+            for (var i = 0; i < selectedActions.length; i++) {
+                $(this).append(`<input type="hidden" name="RoleActions" value="${selectedActions[i]}" /> `);
+            }
+        })
+
+
+    </script>
+}
+

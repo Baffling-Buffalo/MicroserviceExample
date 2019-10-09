@@ -1,0 +1,264 @@
+﻿@{
+    ViewData["Title"] = @Localizer["Audit Logs"];
+}
+@section Styles{
+    <link href="~/lib/air-datepicker/css/datepicker.min.css" rel="stylesheet" />
+    <link href="~/lib/daterangepicker/daterangepicker.css" rel="stylesheet" />
+}
+<card title="@Localizer["Audit Logs"].Value">
+    <card-body>
+        <button asp-authorize asp-claims="@Permissions.UserDelete" onclick="OpenModal('delete')" class="btn btn-danger btn-sm">@SharedLocalizer["Delete"]</button>
+        <hr />
+        <div class="row">
+            <!-- Date and time range -->
+            <div class="form-group col-12 col-md-6 col-lg-4">
+                <label>Date and time range:</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="far fa-clock"></i></span>
+                    </div>
+                    <input type="text" class="form-control form-control-sm float-right" id="timeRange">
+                </div>
+                <!-- /.input group -->
+            </div>
+            <!-- /.form group -->
+        </div>
+        <table id="dtAudits" class="table table-hover" style="width:100%;"></table>
+
+    </card-body>
+</card>
+
+<!-- Modals -->
+<modal id="deleteModal" title="@Localizer["Delete audits"].Value" small="true">
+    <modal-body>
+        <p>@Localizer["Are you sure you want to permanently delete the audits?"]</p>
+    </modal-body>
+    <modal-footer dismiss-text="@SharedLocalizer["Cancel"]">
+        <form asp-action="Delete" asp-antiforgery="true" class="getAuditsBeforeSubmit">
+            <button type="submit" class="btn btn-danger">@SharedLocalizer["Delete"]</button>
+        </form>
+    </modal-footer>
+</modal>
+
+@section scripts {
+    <script src="~/lib/moment/moment.min.js"></script>
+    <script src="~/lib/daterangepicker/daterangepicker.js"></script>
+    <script>
+        var auditTable;
+        var selectedAudits = [];
+        //FOR DATATABLE AJAX DATA
+        var startDate = null;
+        var endDate = null;
+        function datatableInit() {
+            //***** USER DATATABLE SERVER SIDE *****
+            userTable = $('#dtAudits').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    type: "POST",
+                    url: "AuditLog/AuditsForDatatable",
+                    data: function (d) {
+                        if (startDate != null)
+                            d.startDateString = startDate;
+                        if (endDate != null)
+                            d.endDateString = endDate;
+                        return d;
+                    },
+                },
+                responsive: {
+                    details: {
+                        type: 'column',
+                        target: 0
+                    }
+                },
+                rowId: 'CorrelationId',
+                rowCallback: function (row, data,displayNum) {
+                    if ($.inArray(data.CorrelationId.toString(), selectedAudits) !== -1) {
+                        $(row).addClass('selected');
+                    }
+                },
+                order: [[5, "desc"]],
+                columnDefs: [
+                    { targets: [0], data: null, className: 'control', defaultContent: '', orderable: false, searchable: false, },
+                    { targets: [1], data: 'EntityType', title: "@Localizer["Entity type"]" },
+                    { targets: [2], data: 'Action', title: "@Localizer["Action"]" },
+                    { targets: [3], data: 'Username', title: "@SharedLocalizer["Username"]" },
+                    {
+                        targets: [4],
+                        mData: function (d) { return moment(d.CreationDate).format("DD.MM.YYYY HH:mm") },
+                        title: "@Localizer["Date created"]",
+                        searchable: false,
+                        orderable: true,
+                        orderData: 5
+                    },
+                    { targets: [5], "visible": false, "searchable": false, data: 'CreationDate' },
+                    {
+                        targets: [6],
+                        class: 'none',
+                        mData: function (d) {
+                            var html = "";
+                            var auditLogs = d.Logs;
+                            for (var i = 0; i < auditLogs.length; i++) {
+                                var logData;
+                                if (auditLogs[i].AuditData != null && auditLogs[i].AuditData != "") {
+                                    logData = JSON.parse(auditLogs[i].AuditData); 
+                                    // TODO: parse logData into wanted view
+                                    html += `<h5>${auditLogs[i].AuditAction}</h5>`;
+                                    html += `<label>${auditLogs[i].AuditData}</label>`;
+                                }
+                                else {
+                                    html += `<h5>${auditLogs[i].Description}</h5>`;
+                                }
+                                html += '</br>';
+                            }
+                            return html;
+                        },
+                    }
+                    //{
+                    //    targets: [2],
+                    //    class: 'none',
+                    //    mData: function (d) {
+                    //        var html = "";
+                    //        for (var i = 0; i < d.PermissionNames.length; i++) {
+                    //            var checked = "";
+                    //            if (selectedActions != null && selectedActions.length > 0 && selectedActions.includes(d.PermissionClaimValues[i])) {
+                    //                checked = "checked";
+                    //            }
+                    //            html += `<div>
+                    //                        <label for="${d.Name.replace(/\s+/g, '')}RoleAction${i}">
+                    //                            <input type="checkbox" onClick="actionSelection(this)" class="actionCheckbox" id="${d.Name.replace(/\s+/g, '')}RoleAction${i}" value="${d.PermissionClaimValues[i]}" ${checked}/>
+                    //                        ${d.PermissionNames[i]}</label>
+                    //                </div>`;
+                    //        }
+                    //        return html;
+                    //    },
+                    //}
+                    @*{
+                        targets: [6],
+                        searchable: false,
+                        orderable: false,
+                        title: "@SharedLocalizer["Actions"]",
+                        className: 'text-center',
+                        mData: function (d) {
+                            var id = d.Id;
+                            var html = "";
+                            if (@User.HasActionClaims(Permissions.UserUpdate).ToString().ToLower())
+                                html += `<a href="@Url.Action("Edit", "User")/?id=${id}" class="btn btn-xs btn-default">@SharedLocalizer["Details"]</a>`;
+                            return html;
+                        }
+                    }*@
+                ]
+            });
+
+            //select row in datatable
+            $('#dtAudits tbody').on('click', 'td', function () {
+
+                //if cell(column) with index of 0 or 7 was clicked, then return
+                //note: column with set 'visible: false' will be ignored
+                var cellIndex = $(this).index();
+                if (cellIndex == 0 )
+                    return;
+
+                //get row of td that was clicked
+                var row = $(this).closest('tr');
+                var id = row.attr("id");
+
+                var index = $.inArray(id, selectedAudits);
+
+                if (index === -1) {
+                    selectedAudits.push(id);
+                } else {
+                    selectedAudits.splice(index, 1);
+                }
+                row.toggleClass('selected');
+            });
+        }
+
+        datatableInit();
+
+        $(".getAuditsBeforeSubmit").submit(function (eventObj) {
+            if (!$(this).valid())
+                return;
+
+            if (selectedAudits.length == 0) {
+                toastr.warning("@Localizer["Please select at least one audit for this action"]");
+                return false;
+            }
+
+            for (var i = 0; i < selectedAudits.length; i++) {
+                $(this).append(`<input type="hidden" name="AuditIds" value="${selectedAudits[i]}" /> `);
+            }
+
+            $(this).append(`<input type="hidden" name="ReturnUrl" value="${window.location.pathname}" /> `);
+
+            return true;
+        });
+
+        function refreshTable() {
+            userTable.ajax.reload();
+        };
+
+        function OpenModal(name) {
+            if (selectedAudits.length > 0) {
+                $(`#${name}Modal`).modal('show');
+            } else {
+                toastr.warning("@Localizer["Please select at least one audit for this action"]");
+            }
+        }
+
+        $('#timeRange').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 15,
+            timePicker24Hour: true,
+            locale: {
+                format: 'DD/MM/YYYY HH:mm'
+            },
+            ranges: {
+                '@Localizer["Today"]': [moment().set({ hour: 0, minute: 0 }), moment().set({ hour: 23, minute: 59 })],
+                '@Localizer["Yesterday"]': [moment().subtract(1, 'days').set({ hour: 0, minute: 0 }), moment().subtract(1, 'days').set({ hour: 23, minute: 59 })],
+                '@Localizer["Last 7 Days"]': [moment().subtract(6, 'days').set({ hour: 0, minute: 0 }), moment().set({ hour: 23, minute: 59 })],
+                '@Localizer["Last 30 Days"]': [moment().subtract(29, 'days').set({ hour: 0, minute: 0 }), moment().set({ hour: 23, minute: 59 })],
+            },
+            alwaysShowCalendars: true,
+            locale: {
+                "applyLabel": '@Localizer["Apply"]',
+                "cancelLabel": '@SharedLocalizer["Cancel"]',
+                "fromLabel": '@Localizer["From"]',
+                "toLabel": '@Localizer["To"]',
+                "customRangeLabel": '@Localizer["Custom range"]',
+                "daysOfWeek": [
+                    "Ne",
+                    "Po",
+                    "Ut",
+                    "Sr",
+                    "Ce",
+                    "Pe",
+                    "Su"
+                ],
+                "monthNames": [
+                    "Januar",
+                    "Februar",
+                    "Mart",
+                    "April",
+                    "Maj",
+                    "Jun",
+                    "Jul",
+                    "Avgust",
+                    "Septembar",
+                    "Oktobar",
+                    "Novembar",
+                    "Decembar"
+                ],
+                "firstDay": 1
+            }
+        })
+
+        $('#timeRange').val('@Localizer["Choose date"]');
+
+        $('#timeRange').on('apply.daterangepicker', function (ev, picker) {
+            startDate = picker.startDate.format('YYYY-MM-DD hh:mm a');
+            endDate = picker.endDate.format('YYYY-MM-DD hh:mm a');
+            refreshTable();
+        });
+    </script>
+}

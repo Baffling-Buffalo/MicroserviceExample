@@ -1,0 +1,1 @@
+﻿{"ContextClassName":"AuditLogDbContext","DefaultDacpacSchema":null,"IdReplace":false,"IncludeConnectionString":false,"OutputPath":"Models","ProjectRootNamespace":"Identity.API","SelectedToBeGenerated":0,"Tables":[{"HasPrimaryKey":true,"Name":"dbo.AuditLogs"}],"UseDatabaseNames":false,"UseFluentApiOnly":true,"UseHandleBars":false,"UseInflector":true}

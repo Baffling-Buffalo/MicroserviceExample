@@ -1,0 +1,328 @@
+/**
+ * @author PHAM
+ *
+ * Site Survey Detail Ctrl
+ * @param $scope
+ * @param $log
+ * @param $window
+ * @param $location
+ * @param $stateParams
+ * @param $http
+ * @param customerList
+ * @param oztotoService
+ *
+ */
+function ozViewerCtrl($scope, $log, $window, $location, $stateParams, $http, customerList, oztotoService) {
+    $log.debug("ozViewerCtrl");
+
+    // get id from $stateParams and put into scope
+    $scope.report = {};
+    // $scope.report.id = $stateParams.id;
+    // $scope.report.statusId = $stateParams.statusId;
+    // $scope.report.reportForm = $stateParams.reportForm;
+    // $scope.report.fileName = $stateParams.fileName;
+
+    $scope.report.reportPath = $stateParams.reportPath;
+    $scope.completeNo = $stateParams.completeNo;
+    $scope.cmail = "";
+
+    $scope.allAttendees = false;
+
+    var reportType = $scope.report.reportPath.substr($scope.report.reportPath.lastIndexOf(".") + 1, $scope.report.reportPath.length);
+    var reportName = $scope.report.reportPath.substr($scope.report.reportPath.lastIndexOf("/") + 1, $scope.report.reportPath.length);
+
+    $log.debug('Report path:: ' + $scope.report.reportPath);
+    $log.debug('Report type:: ' + reportType);
+    $log.debug('Report name:: ' + reportName);
+
+    // parameters for submitting form
+    $scope.completeNo = $stateParams.completeNo;
+    $scope.fileName = reportName.split(".")[0];
+
+    // init OZ Viewer
+    var ozviewer = oztotoService.initOZTotoViewer($scope);
+
+    $scope.ozviewer_div = 'bottom';
+
+    // OZ parameters
+    $scope.ozparams = {};
+
+    if ('ozd' === reportType.toLowerCase()) { // If working status then need to open ozd form
+        $scope.servletconnection_url = 'connection.openfile=' + $location.protocol() + '://' + $location.host() + ':' + $location.port() + '' + location.pathname + 'resources/upload/' + reportName + '.ozd';
+        $scope.ozparams.ozd_allowreplaceformparam = 'ozd.allowreplaceformparam=true'; // allow to update formparam data when open ozd file
+
+        $scope.cmail = 'undefined';
+
+    } else {
+        $scope.servletconnection_url = 'connection.servlet=' + $location.protocol() + '://' + $location.host() + ':' + $location.port() + '' + location.pathname + 'server';
+        $scope.ozparams.reportname = 'connection.reportname=' + $scope.report.reportPath;
+    }
+    $scope.ozparams.viewmode = 'viewer.viewmode=fittowidth';
+    $scope.ozparams.attachmobilegallery = 'eform.imagepicker_camera_show_choose_button=true';
+
+    // var paramCount
+    // Insert_OZViewer_Param("connection.pcount","1");
+    // Insert_OZViewer_Param("connection.args1","CampaignCustomers=[{ "firstName": "Quyen", "lastName": "Phan", "company": "FORCS", "title": "Developer", "phone": "0000", "email": "pvmquyen@forcs.com", "memberStatus": "Registered"}]");
+
+
+    // OZ parameter splitter
+    var ozparam_splitter = "&";
+
+    oztotoService.runOZViewer($scope, ozviewer, ozparam_splitter);
+
+    // OZ toto navigation event listener: physical button
+    OZTotoFramework.navigator.addEventListener("action", function (event) {
+        if (ozviewer.isVisible()) {
+            switch (event.button) {
+                case "home":
+                    break;
+                case "back":
+                    break;
+                case "forward":
+                    break;
+                case "refresh":
+                    break;
+            }
+
+            event.handled = true;
+        }
+    });
+
+    // go back
+    $scope.goBack = function () {
+        $log.debug("ozViewerCtrl - goBack");
+
+        ozviewer.dispose(); // dispose ozviewer
+
+        $window.history.back(); // back to previous page
+    };
+
+    // go previous form pages of ozviewer
+    $scope.goPrevious = function ($window) {
+        ozviewer.getInformation("INPUT_CHECK_VALIDITY_CURRENT_PAGE", function (result) {
+            if (result !== null && result === "valid") {
+                ozviewer.getInformation("CURRENT_PAGE", function (currentReportPage) {
+                    if ("1" === currentReportPage) {
+                        ozviewer.script("prev_report");
+                    } else {
+                        ozviewer.script("prev");
+                    }
+                });
+            }
+        });
+    };
+
+    // go next form pages of ozviewer
+    $scope.goNext = function ($window) {
+        var currentReportTotalPage;
+        ozviewer.getInformation("INPUT_CHECK_VALIDITY_CURRENT_PAGE", function (result) {
+            if (result !== null && result === "valid") {
+                ozviewer.getInformation("CURRENT_REPORT_INDEX", function (currentReportIdx) {
+                    ozviewer.getInformation("TOTAL_PAGE_AT=" + currentReportIdx, function (totalPage) {
+                        currentReportTotalPage = totalPage;
+                        ozviewer.getInformation("CURRENT_PAGE", function (currentPage) {
+                            if (currentReportTotalPage === currentPage) {
+                                ozviewer.script("next_report");
+                            } else {
+                                ozviewer.script("next");
+                            }
+                        });
+                    });
+                });
+            };
+        });
+    };
+
+    // do submit
+    $scope.doSubmit = function () {
+        $log.debug("ozViewerCtrl - doSubmit");
+
+        OZTotoFramework.indicator.start(); // start OZ indicator
+
+        $scope.actionType = "submit"; // add action type is 'submit' to scope
+
+        ozviewer.getInformation("INPUT_CHECK_VALIDITY", function (result) {
+            if ('valid' === result) {
+                var exportparams = "viewer.exportcommand=true";
+                exportparams += ozparam_splitter + "export.mode=silent";
+                exportparams += ozparam_splitter + "export.confirmsave=false";
+                exportparams += ozparam_splitter + "export.path=/sdcard";
+                exportparams += ozparam_splitter + "ozd.filename=export_temp.ozd";
+                exportparams += ozparam_splitter + "export.format=ozd";
+
+                // save memory stream
+                ozviewer.scriptEx("save_memorystream", exportparams, ozparam_splitter, function (res) {
+                });
+            };
+        });
+
+    };
+
+    $scope.submitSingle = function () {
+        $scope.cmail = prompt("Please enter your email:", $window.localStorage.getItem('userEmail'));
+        if ($scope.cmail === null) {
+            // click cancel
+        } else {
+            if ($scope.cmail.length === 0) {
+                $scope.cmail = 'undefined';
+            }
+            $scope.doSubmit();
+        }
+    }
+
+    $scope.registerCampaign = function () {
+
+        $scope.actionType = "register";
+
+        OZTotoFramework.indicator.start(); // start OZ indicator
+
+        ozviewer.getInformation("INPUT_CHECK_VALIDITY", function (result) {
+            if ('valid' === result) {
+                ozviewer.getInformation("INPUT_JSON_ALL", function (json) {
+
+                    var obj = JSON.parse(json);
+                    $scope.cmail = obj.email;
+
+                    var body = {
+                        campaignName: 'Sample',
+                        memberType: 'Test',
+                        memberStatus: 'Registered',
+                        firstName: 'Quyen',
+                        lastName: 'Phan',
+                        title: 'Director',
+                        company: 'Forcs',
+                        phone: '010-5579-2413',
+                        email: obj.email
+                    }
+
+                    var req = {
+                        method: 'POST',
+                        url: './api/v1/customer/' + '147',
+                        dataType: 'json',
+                        headers: {
+                            'Content-Type': 'application/json; charset=utf-8'
+                        },
+                        data: JSON.stringify(body)
+                    }
+
+                    $http(req).success(function (data, status, headers, config) {
+                    }).error(function (data, status, headers, config) {
+                        toastr.pop({
+                            type: 'error',
+                            title: data.code,
+                            body: data.msg,
+                            showCloseButton: true,
+                            timeout: timeout
+                        });
+                    }).then(function (data) {
+                        cfpLoadingBar.complete();	// Loading Bar End
+                    });
+
+                    var exportparams = "viewer.exportcommand=true";
+                    exportparams += ozparam_splitter + "export.mode=silent";
+                    exportparams += ozparam_splitter + "export.confirmsave=false";
+                    exportparams += ozparam_splitter + "export.path=/sdcard";
+                    exportparams += ozparam_splitter + "ozd.filename=export_temp.ozd";
+                    exportparams += ozparam_splitter + "export.format=ozd";
+
+                    // save memory stream
+                    ozviewer.scriptEx("save_memorystream", exportparams, ozparam_splitter, function (res) {
+                    });
+                });
+            }
+            ;
+        });
+
+
+    }
+
+    // do save
+    $scope.doSave = function () {
+        $log.debug("ozViewerCtrl - doSave");
+
+        OZTotoFramework.indicator.start(); // start OZ indicator
+
+        $scope.actionType = "save"; // add action type is 'save' to scope
+
+        ozviewer.getInformation("INPUT_CHECK_VALIDITY", function (result) {
+            if ('valid' === result) {
+                var exportparams = "viewer.exportcommand=true";
+                exportparams += ozparam_splitter + "export.mode=silent";
+                exportparams += ozparam_splitter + "export.confirmsave=false";
+                exportparams += ozparam_splitter + "export.path=/sdcard";
+                exportparams += ozparam_splitter + "ozd.filename=export_temp.ozd";
+                exportparams += ozparam_splitter + "export.format=ozd";
+
+                // save memory stream
+                ozviewer.scriptEx("save_memorystream", exportparams, ozparam_splitter, function (res) {
+                    /* if(res == 0){
+                     append("pdfExport", "success.");
+                     }else {
+                     append("pdfExport", "fail.");
+                     } */
+                });
+            }
+
+            OZTotoFramework.indicator.stop();
+        });
+
+    };
+
+    var loadCustomerList = function() {
+        var req = {
+            method: 'GET',
+            url: './api/v1/customer',
+            dataType: 'json',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        }
+
+        $http(req).success(function (data, status, headers, config) {
+            $scope.customers = data;
+        }).error(function (data, status, headers, config) {
+
+        }).then(function (data) {
+        });
+    }
+
+    if(this.showSubmitAll && this.showSubmitSingle) {
+        loadCustomerList();
+    }
+}
+
+angular.module('ozViewer')
+    .component('ozViewer', {
+        templateUrl: 'statics/mobile/oz-viewer/mobile/oz-viewer.template.html',
+        controller: ['$scope', '$log', '$window', '$location', '$stateParams', '$http', 'oztotoService', ozViewerCtrl],
+        bindings: {
+            showBack: '<',
+            showNavigation: '<',
+            showSave: '<',
+            showSubmitAll: '<',
+            showSubmitSingle: '<',
+            showRegister: '<'
+        }
+    })
+    .component('ozRegisterViewer', {
+        templateUrl: 'statics/mobile/oz-viewer/mobile/oz-viewer.template.html',
+        controller: ['$scope', '$log', '$window', '$location', '$stateParams', '$http', 'oztotoService', ozViewerCtrl],
+        bindings: {
+            showBack: '<',
+            showNavigation: '<',
+            showSave: '<',
+            showSubmitAll: '<',
+            showSubmitSingle: '<',
+            showRegister: '<',
+            campaignCustomer: '<'
+        }
+    });
+    // .factory('campaignCustomers', function ($resource) {
+    //     return $resource('./api/v1/customer', {}, {
+    //         query: {
+    //             method: 'GET',
+    //             params: {},
+    //             isArray: true
+    //         }
+    //     })
+    // });

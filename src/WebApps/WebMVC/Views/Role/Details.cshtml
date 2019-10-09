@@ -1,0 +1,106 @@
+﻿@model WebMVC.ViewModels.Role.RoleViewModel
+
+@{
+    ViewData["Title"] = Localizer["Role Details"];
+}
+
+<card title=@Localizer["Role Details"].Value>
+    <card-body>
+        <blockquote>
+            <p>
+                <dl class="row">
+                    <dt class="col-md-2 col-sm-3">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd class="col-md-10 col-sm-9">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-md-2 col-sm-3">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+                    <dd class="col-md-10 col-sm-9">
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                    <dt class="col-md-2 col-sm-3">
+                        @Html.DisplayNameFor(model => model.SystemRole)
+                    </dt>
+                    <dd class="col-md-10 col-sm-9">
+                        @(Model.SystemRole ? SharedLocalizer["Yes"] : SharedLocalizer["No"])
+                    </dd>
+                    <dt class="col-md-2 col-sm-3">
+                        @Html.DisplayNameFor(model => model.RoleActions)
+                    </dt>
+                    <dd class="col-md-10 col-sm-9">
+                        @string.Join(", ", Model.RoleActions)
+                    </dd>
+                </dl>
+            </p>
+        </blockquote>
+    </card-body>
+</card>
+
+<card asp-authorize asp-claims="@Permissions.UserRead" title=@Localizer["Users in role"].Value>
+    <card-body>
+        <table id="dtUsers" class="table table-hover" style="width:100%;"></table>
+    </card-body>
+    <card-footer>
+        <a asp-action="Index" class="btn btn-default">@SharedLocalizer["Back"]</a>
+    </card-footer>
+</card>
+
+
+@section Scripts{
+    <script>
+        function datatableInit() {
+            //***** USER DATATABLE SERVER SIDE *****
+            userTable = $('#dtUsers').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    type: "POST",
+                    url: "/User/UsersForDatatable",
+                    data: function (d) {
+                        d.roleIds = Array(1).fill('@Html.Raw(Model.Id)');
+                        return d;
+                    },
+                },
+                responsive: {
+                    details: {
+                        type: 'column',
+                        target: 0
+                    }
+                },
+                rowId: 'Id',
+                columnDefs: [
+                    { targets: [0], data: null, className: 'control', defaultContent: '', orderable: false, searchable: false, },
+                    { targets: [1], data: 'UserName', title: "@SharedLocalizer["Username"]" },
+                    { targets: [2], data: 'FullName', title: "@SharedLocalizer["Full name"]" },
+                    { targets: [3], data: 'Email', title: "@SharedLocalizer["E-mail"]" },
+                    { targets: [4], data: 'PhoneNumber', title: "@SharedLocalizer["Phone number"]" },
+                    {
+                        data: "CreationDate",
+                        targets: [5],
+                        mData: function (d) { return moment(d.CreationDate).format("DD.MM.YYYY") },
+                        title: "@Localizer["Date created"]",
+                        searchable: false,
+                        orderable: false,
+                    },
+                    {
+                        targets: [6],
+                        visible: @User.HasClaim(c => c.Type == "permission" && c.Value == Permissions.UserUpdate).ToString().ToLower(),
+                        searchable: false,
+                        orderable: false,
+                        title: "@SharedLocalizer["Actions"]",
+                        className: 'text-center',
+                        render: function (data, type, full, meta) {
+                            var id = full.Id;
+                            return `<a href="@Url.Action("Edit", "User")/?id=${id}" class="btn btn-xs btn-default">@SharedLocalizer["Edit"]</a>`;
+                        }
+                    }
+                ]
+            });
+        }
+
+        datatableInit();
+    </script>
+}

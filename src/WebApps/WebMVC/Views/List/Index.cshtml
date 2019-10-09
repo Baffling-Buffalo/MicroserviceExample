@@ -1,0 +1,65 @@
+﻿@model IEnumerable<WebMVC.ViewModels.List.ListTreeNode>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles{
+    <link href="~/lib/jquery-treetable/jquery-treetable.css" rel="stylesheet" />
+}
+
+<partial name="_ModalPartial.cshtml" />
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">@SharedLocalizer["Lists"]</h3>
+    </div>
+    <div class="card-body">
+
+        <a asp-action="Create" asp-authorize asp-claims="list_create" class="btn btn-primary btn-sm">@SharedLocalizer["Create"]</a>
+        <button type="button" asp-authorize asp-claims="list_delete" id="btnDelete" class="btn btn-danger btn-sm">@SharedLocalizer["Delete"]</button>
+
+        @*<div class="btn-group">
+                <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                    @SharedLocalizer["Manage"]<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <form asp-controller="List" asp-action="AddContacts" method="get" class="getListsBeforeSubmit">
+                            <button type="submit" class="dropdown-item">@Localizer["Add contacts"]</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form asp-controller="List" asp-action="RemoveContacts" method="get" class="getListsBeforeSubmit">
+                            <button type="submit" class="dropdown-item">@Localizer["Remove contacts"]</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>*@
+
+        <hr />
+        <table id="listsTable" class="table">
+            <thead>
+                <tr>
+                    <th style="display:none;"></th>
+                    <th style="width:400px;">@SharedLocalizer["Name"]</th>
+                    <th>@SharedLocalizer["Description"]</th>
+                    <th>@SharedLocalizer["Contacts"]</th>
+                    <th>@SharedLocalizer["Actions"]</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/lib/jquery-treetable/jquery-treetable.js"></script>
+    <script src="~/js/list/list.index.js"></script>
+    <script>
+        list.claims({ update: "@User.IsInRole("admin")" == "True" ? "True" : "@User.Claims.Any(cl => cl.Type == "action" && cl.Value == "list_update")"});
+        list.localization({ update: "@SharedLocalizer["Update"]", details: "@SharedLocalizer["Details"]", toastr: { selectAtLeastOneListMessage: "@Localizer["Please select at least one list for this action"]" } });
+        list.treeTableInit(@Html.Raw(Json.Serialize(Model)));
+    </script>
+}

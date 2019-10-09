@@ -1,0 +1,146 @@
+﻿@model string
+
+@{
+    ViewData["Title"] = "Group management";
+}
+@section styles{
+    <link href="~/lib/jquery-treetable/jquery-treetable.css" rel="stylesheet" />
+    <link href="~/lib/icheck-bootstrap/icheck-bootstrap.min.css" rel="stylesheet"/>
+}
+<card title="@Localizer["Group management"].Value">
+    <card-body>
+        @*<div class="btn-group">
+                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    @SharedLocalizer["Manage"]<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <form asp-controller="UserGroup" asp-action="AddUsersToGroups" method="post" class="getGroupsBeforeSubmit">
+                            <button class="dropdown-item">@Localizer["Add users"]</button>
+                        </form>
+                    </li>
+                    <li>
+                        <form asp-controller="UserGroup" asp-action="RemoveUsersFromGroups" method="post" class="getGroupsBeforeSubmit">
+                            <button class="dropdown-item">@Localizer["Remove users"]</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>*@
+
+        <a asp-action="Create" asp-authorize asp-claims="@Permissions.UserGroupCreate"  class="btn btn-primary btn-sm">@SharedLocalizer["Create New"]</a>
+        <button asp-authorize asp-claims="@Permissions.UserGroupDelete"  onclick="OpenModal('delete')" class="btn btn-danger btn-sm">@SharedLocalizer["Delete"]</button>
+        <hr />
+        <table id="groupTable" class="table">
+            <thead>
+                <tr>
+                    <th style="display:none;"></th>
+                    <th style="width:400px;">@SharedLocalizer["Name"]</th>
+                    <th>@SharedLocalizer["Description"]</th>
+                    <th>@Localizer["User count"]</th>
+                    <th>@SharedLocalizer["Actions"]</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </card-body>
+</card>
+
+<!-- Modals -->
+<modal id="deleteModal" title="@Localizer["Delete groups"].Value" small="true">
+    <modal-body>
+        <p>@Localizer["Are you sure you want to permanently delete the groups?"]</p>
+        <div class="icheck-primary icheck-inline">
+            <input type="checkbox" id="deleteSubGroups" />
+            <label for="deleteSubGroups">@Localizer["Delete sub groups"]</label>
+        </div>
+    </modal-body>
+    <modal-footer dismiss-text="@SharedLocalizer["Cancel"]">
+        <form asp-action="Delete" asp-antiforgery="true" id="deleteGroupsForm" class="getGroupsBeforeSubmit">
+
+            <button type="submit" class="btn btn-danger">@SharedLocalizer["Delete"]</button>
+        </form>
+    </modal-footer>
+</modal>
+
+@section scripts {
+    <script src="~/lib/jquery-treetable/jquery-treetable.js"></script>
+    <script>
+
+        localizer = { update: "@SharedLocalizer["Update"]", details: "@SharedLocalizer["Details"]", toastr: { selectAtLeastOneListMessage: "@Localizer["Please select at least one list for this action"]" } };
+        buildList = function (data) {
+            var html = '';
+            for (item in data) {
+                var parentId = data[item].ParentId == null ? "" : data[item].ParentId;
+                var description = data[item].Description == null ? "" : data[item].Description;
+
+                var showEdit = @(User.HasActionClaims(Permissions.UserGroupUpdate).ToString().ToLower());
+
+                if (typeof (data[item].Children) === 'object') { // An array will return 'object'
+                    html += '<tr><td style="display:none;">' + data[item].Id + '</td><td><div class="tt" data-tt-id="' + data[item].Id + '" data-tt-parent="' + parentId + '">' + data[item].Name + '</div></td><td>' + description + '</td><td>' + data[item].NumberOfUsers + '</td><td>' + (showEdit ? '<a href="/UserGroup/Edit?id=' + data[item].Id + '" class="btn btn-xs btn-default">' + localizer.update + '</a>':'') + '<a href="/UserGroup/Details?id=' + data[item].Id + '" class="btn btn-xs btn-default">' + localizer.details + '</a></td></tr>';
+                    html += this.buildList(data[item].Children); // Submenu found. Calling recursively same method
+                } else {
+                    html += '<tr><td style="display:none;">' + data[item].Id + '</td><td><div class="tt" data-tt-id="' + data[item].Id + '" data-tt-parent="' + parentId + '">' + data[item].Name + '</div></td><td>' + description + '</td><td>' + data[item].NumberOfUsers + '</td><td>' + (showEdit ? '<a href="/UserGroup/Edit?id=' + data[item].Id + '" class="btn btn-xs btn-default">' + localizer.update + '</a>' : '') + '<a href="/UserGroup/Details?id=' + data[item].Id + '" class="btn btn-xs btn-default">' + localizer.details + '</a></td></tr>';
+                }
+            }
+            return html;
+        }
+
+        $(function () {
+            var html = buildList(@Html.Raw(Model));
+            $("#groupTable tbody").html(html);
+            $("#groupTable").treetable();
+        })
+
+
+        //select row in table
+        var selectedGroups = [];
+
+        $(document).on("click", "#groupTable td", function (e) {
+            var cellIndex = $(this).index();
+            var elementName = e.target.nodeName;
+
+            if (elementName == 'DIV' || cellIndex == 4)
+                return;
+
+            //get row of td that was clicked
+            var row = $(this).closest('tr');
+
+            var id = row.find('td:first').html();
+            var index = $.inArray(id, selectedGroups);
+
+            if (index === -1) {
+                selectedGroups.push(id);
+            } else {
+                selectedGroups.splice(index, 1);
+            }
+
+            row.toggleClass('selected');
+        });
+
+        $("#deleteGroupsForm").submit(function () {
+            $(this).append(`<input type="hidden" name="deleteSubGroups" value="${$("#deleteSubGroups").is(":checked")}" /> `);
+        })
+
+        $(".getGroupsBeforeSubmit").submit(function (eventObj) {
+            if (!$(this).valid())
+                return;
+
+            for (var i = 0; i < selectedGroups.length; i++) {
+                $(this).append(`<input type="hidden" name="GroupIds" value="${selectedGroups[i]}" /> `);
+            }
+
+            $(this).append(`<input type="hidden" name="ReturnUrl" value="${window.location.pathname}" /> `);
+
+            return true;
+        });
+
+        function OpenModal(name) {
+            if (selectedGroups.length > 0) {
+                $(`#${name}Modal`).modal('show');
+            } else {
+                toastr.warning("@Localizer["Please select at least one group for this action"]");
+            }
+        }
+
+    </script>
+}

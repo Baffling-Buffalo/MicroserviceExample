@@ -1,0 +1,259 @@
+﻿@{
+    ViewData["Title"] = @Localizer["User Management"];
+}
+<card title="@Localizer["User Management"].Value">
+    <card-body>
+        <a asp-authorize asp-claims="@Permissions.UserCreate" asp-action="Create" class="btn btn-primary btn-sm">@SharedLocalizer["Create New"]</a>
+        <button asp-authorize asp-claims="@Permissions.UserDelete"  onclick="OpenModal('delete')" class="btn btn-danger btn-sm">@SharedLocalizer["Delete"]</button>
+
+        <div class="btn-group">
+            <button class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                @SharedLocalizer["Manage"]<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li asp-authorize asp-claims="@Permissions.AddUserToGroup,@Permissions.UserGroupRead">
+                    <form asp-controller="UserGroup" asp-action="AddUsersToGroups" method="post" class="getUsersBeforeSubmit">
+                        <button class="dropdown-item">@Localizer["Add to group"]</button>
+                    </form>
+                </li>
+                <li asp-authorize asp-claims="@Permissions.RemoveUserFromGroup,@Permissions.UserGroupRead">
+                    <form asp-controller="UserGroup" asp-action="RemoveUsersFromGroups" method="post" class="getUsersBeforeSubmit">
+                        <button class="dropdown-item">@Localizer["Remove from group"]</button>
+                    </form>
+                </li>
+                <li class="dropdown-divider"></li>
+                <li asp-authorize asp-claims="@Permissions.AddUserToRole,@Permissions.RoleRead">
+                    <form asp-controller="Role" asp-action="AddUsersToRoles" method="post" class="getUsersBeforeSubmit">
+                        <button class="dropdown-item">@Localizer["Assign role"]</button>
+                    </form>
+                </li>
+                <li asp-authorize asp-claims="@Permissions.RemoveUserFromRole,@Permissions.RoleRead">
+                    <form asp-controller="Role" asp-action="RemoveUsersFromRoles" method="post" class="getUsersBeforeSubmit">
+                        <button class="dropdown-item">@Localizer["Remove role"]</button>
+                    </form>
+                </li>
+                <li class="dropdown-divider"></li>
+                <li asp-authorize asp-claims="user_form_add,form_read">
+                    <a class="dropdown-item" asp-controller="Form" asp-action="AsignFormsToUsers">@Localizer["Assign form"]</a>
+                </li>
+                <li asp-authorize asp-claims="user_form_remove,form_read">
+                    <a class="dropdown-item" asp-controller="Form" asp-action="RemoveFormsFromUsers">@Localizer["Remove form"]</a>
+                </li>
+                @*<li class="dropdown-divider"></li>
+                <li>
+                    <button class="dropdown-item" onclick="OpenModal('activate')">@Localizer["Activate"]</button>
+                </li>
+                <li>
+                    <button class="dropdown-item" onclick="OpenModal('deactivate')">@Localizer["Deactivate"]</button>
+                </li>*@
+            </ul>
+        </div>
+
+        <hr />
+        <!--Filter row-->
+        <div class="row mb-2">
+            <div class="col-lg-3 col-md-3 col-6" asp-authorize asp-claims="@Permissions.UserGroupRead">
+                <comboTree action="GetGroupsForComboTree"
+                           controller="UserGroup"
+                           comboTreeObjVar="groupTreeFilter"
+                           isMultiselect="true"
+                           placeholder="@SharedLocalizer["Groups"]"
+                           showMaxItems="1" small="true"
+                           selectionCallback="refreshTable"></comboTree>
+            </div>
+            <div class="col-lg-3 col-md-3 col-6" asp-authorize asp-claims="@Permissions.RoleRead">
+                <comboTree action="GetRolesForComboTree"
+                           controller="Role"
+                           comboTreeObjVar="roleTreeFilter"
+                           isMultiselect="true"
+                           placeholder="@SharedLocalizer["Roles"]"
+                           showMaxItems="1" small="true"
+                           selectionCallback="refreshTable"></comboTree>
+            </div>
+            <div class="col-lg-3 col-md-3 col-6" asp-authorize asp-claims="@Permissions.FormGroupRead">
+                @*<comboTree action="GetGroupsForComboTreePlugin"
+                           controller="FormGroup"
+                           comboTreeObjVar="formTreeFilter"
+                           isMultiselect="true"
+                           placeholder="@SharedLocalizer["Form groups"]"
+                           showMaxItems="1" small="true"
+                           selectionCallback="refreshTable"></comboTree>*@
+            </div>
+            <div class="col-lg-2 col-md-3 col-6">
+                <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="lockedUsersSwitch" onchange="refreshTable()">
+                    <label class="custom-control-label" for="lockedUsersSwitch">@Localizer["Deactivated"]</label>
+                </div>
+            </div>
+        </div>
+
+        <table id="dtUsers" class="table table-hover" style="width:100%;"></table>
+    </card-body>
+</card>
+
+
+<!-- Modals -->
+<modal id="deleteModal" title="@Localizer["Delete users"].Value" small="true">
+    <modal-body>
+        <p>@Localizer["Are you sure you want to permanently delete the users?"]</p>
+    </modal-body>
+    <modal-footer dismiss-text="@SharedLocalizer["Cancel"]">
+        <form asp-action="Delete" asp-antiforgery="true" class="getUsersBeforeSubmit">
+            <button type="submit" class="btn btn-danger">@SharedLocalizer["Delete"]</button>
+        </form>
+    </modal-footer>
+</modal>
+
+<modal id="activateModal" title="@Localizer["Activate users"].Value" small="true">
+    <modal-body>
+        <p>@Localizer["Are you sure you want to activete the users?"]</p>
+    </modal-body>
+    <modal-footer dismiss-text="@SharedLocalizer["Cancel"]">
+        <form asp-action="Activate" asp-antiforgery="true" class="getUsersBeforeSubmit">
+            <button type="submit" class="btn btn-primary">@SharedLocalizer["Activate"]</button>
+        </form>
+    </modal-footer>
+</modal>
+
+<modal id="deactivateModal" title="@Localizer["Deactivate users"].Value" small="true">
+    <modal-body>
+        <p>@Localizer["Are you sure you want to deactivate the users?"]</p>
+    </modal-body>
+    <modal-footer dismiss-text="@SharedLocalizer["Cancel"]">
+        <form asp-action="Deactivate" asp-antiforgery="true" class="getUsersBeforeSubmit">
+            <button type="submit" class="btn btn-danger">@SharedLocalizer["Deactivate"]</button>
+        </form>
+    </modal-footer>
+</modal>
+
+
+@section scripts {
+    <script src="~/lib/moment/moment.min.js"></script>
+    <script>
+        var userTable;
+        var selectedUsers = [];
+        //FOR DATATABLE AJAX DATA
+        var showLockedUsers = false;
+        var groupIds = [];
+        var roleIds = [];
+
+        function datatableInit() {
+            //***** USER DATATABLE SERVER SIDE *****
+            userTable = $('#dtUsers').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    type: "POST",
+                    url: "User/UsersForDatatable",
+                    data: function (d) {
+                        if (groupIds.length > 0)
+                            d.groupIds = groupIds;
+                        if (roleIds.length > 0)
+                            d.roleIds = roleIds;
+                        d.locked = showLockedUsers;
+                        return d;
+                    },
+                },
+                responsive: {
+                    details: {
+                        type: 'column',
+                        target: 0
+                    }
+                },
+                rowId: 'Id',
+                rowCallback: function (row, data,displayNum) {
+                    if ($.inArray(data.Id.toString(), selectedUsers) !== -1) {
+                        $(row).addClass('selected');
+                    }
+                },
+                columnDefs: [
+                    { targets: [0], data: null, className: 'control', defaultContent: '', orderable: false, searchable: false, },
+                    { targets: [1], data: 'UserName', title: "@SharedLocalizer["Username"]" },
+                    { targets: [2], data: 'FullName', title: "@Localizer["Full name"]" },
+                    { targets: [3], data: 'Email', title: "@SharedLocalizer["E-mail"]" },
+                    { targets: [4], data: 'PhoneNumber', title: "@SharedLocalizer["Phone number"]" },
+                    {
+                        data: "CreationDate",
+                        targets: [5],
+                        mData: function (d) { return moment(d.CreationDate).format("DD.MM.YYYY") },
+                        title: "@Localizer["Date created"]",
+                        searchable: false,
+                        orderable: false,
+                    },
+                    {
+                        targets: [6],
+                        searchable: false,
+                        orderable: false,
+                        title: "@SharedLocalizer["Actions"]",
+                        className: 'text-center',
+                        mData: function (d) {
+                            var id = d.Id;
+                            var html = "";
+                            if (@User.HasActionClaims(Permissions.UserUpdate).ToString().ToLower())
+                                html += `<a href="@Url.Action("Edit", "User")/?id=${id}" class="btn btn-xs btn-default">@SharedLocalizer["Edit"]</a>`;
+                            return html;
+                        }
+                    }
+                ]
+            });
+
+            //select row in datatable
+            $('#dtUsers tbody').on('click', 'td', function () {
+
+                //if cell(column) with index of 0 or 7 was clicked, then return
+                //note: column with set 'visible: false' will be ignored
+                var cellIndex = $(this).index();
+                if (cellIndex == 0 || cellIndex == 6)
+                    return;
+
+                //get row of td that was clicked
+                var row = $(this).closest('tr');
+                var id = row.attr("id");
+
+                var index = $.inArray(id, selectedUsers);
+
+                if (index === -1) {
+                    selectedUsers.push(id);
+                } else {
+                    selectedUsers.splice(index, 1);
+                }
+                row.toggleClass('selected');
+            });
+        }
+
+        datatableInit();
+
+        $(".getUsersBeforeSubmit").submit(function (eventObj) {
+            if (!$(this).valid())
+                return;
+
+            if (selectedUsers.length == 0) {
+                toastr.warning("@Localizer["Please select at least one user for this action"]");
+                return false;
+            }
+
+            for (var i = 0; i < selectedUsers.length; i++) {
+                $(this).append(`<input type="hidden" name="UserIds" value="${selectedUsers[i]}" /> `);
+            }
+
+            $(this).append(`<input type="hidden" name="ReturnUrl" value="${window.location.pathname}" /> `);
+
+            return true;
+        });
+
+        function refreshTable() {
+            groupIds = groupTreeFilter.getSelectedItemsId();
+            roleIds = roleTreeFilter.getSelectedItemsId();
+            showLockedUsers = $("#lockedUsersSwitch").is(':checked');
+            userTable.ajax.reload();
+        };
+
+        function OpenModal(name) {
+            if (selectedUsers.length > 0) {
+                $(`#${name}Modal`).modal('show');
+            } else {
+                toastr.warning("@Localizer["Please select at least one user for this action"]");
+            }
+        }
+    </script>
+}

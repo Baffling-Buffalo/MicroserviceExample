@@ -1,0 +1,31 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title">Please enter additional info</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form">
+            <md-radio-group ng-model="input.type">
+
+                <div class="col-sm-offset-2">
+                    <input type="text" class="form-control" ng-model="docName" placeholder="Additional info"/>
+                </div>
+               
+
+            </md-radio-group>
+
+            <!--<input ng-if="showFormEmail" type="radio" ng-model="inputType" value="formEmail">Email From Form <br/>-->
+            <!--<input ng-if="showCustomEmail" type="radio" ng-model="inputType" value="customEmail">Custom Email <br/>-->
+            <!--<div ng-show="inputType === 'customEmail'" class="form-group">-->
+                <!--<label class="col-sm-2 control-label">Email</label>-->
+                <!--<input type="email" class="form-control" ng-model="mail.address" placeholder="Email"/>-->
+            <!--</div>-->
+            <!--<input ng-if="showSMS" type="radio" ng-model="inputType" value="SMS" disabled>SMS-->
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-info" ng-click="ok()">Complete</button>
+        <button class="btn btn-danger" type="button"
+                ng-click="close()">Cancel
+        </button>
+    </div>
+</div>

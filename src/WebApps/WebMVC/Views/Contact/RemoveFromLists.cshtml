@@ -1,0 +1,59 @@
+﻿@model WebMVC.ViewModels.ContactListViewModel
+
+@{
+    ViewData["Title"] = Localizer["Remove from lists"];
+}
+
+@section Styles{
+    <link href="~/adminlte/plugins/select2/css/select2.min.css" rel="stylesheet" />
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">@Localizer["Remove contacts from lists"]</h3>
+    </div>
+    <form asp-action="RemoveFromLists" asp-antiforgery="true" method="post" id="removeContactsFromListsForm">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="ContactIds" class="control-label"></label>
+                        <p>
+                            @Model.ContactsString
+                        </p>
+                        <select asp-for="ContactIds" asp-items="@Model.Contacts" hidden></select>
+                        @*<select asp-items="@Model.Contacts" asp-for="ContactIds" class="select2" multiple="multiple" data-placeholder="@SharedLocalizer["Select contacts"]"style="width: 100%;"></select>*@
+                        @*<span asp-validation-for="ContactIds" class="text-danger"></span>*@
+                    </div>
+                   
+                    <div class="form-group">
+                        <label asp-for="ListIds" class="control-label"></label>
+                        <comboTree action="GetListsForComboTreePlugin"  asp-authorize asp-claims="list_read"
+                                   controller="List"
+                                   comboTreeObjVar="listTree"
+                                   isMultiselect="true"
+                                   placeholder="@SharedLocalizer["Select lists"]"
+                                   showMaxItems="2"
+                                   small="false"
+                                   showItems="@Model.ListsOfContacts?.ToArray()">
+                        </comboTree>
+                        <select asp-for="ListIds" id="ListIds" hidden></select>
+                        <span asp-validation-for="ListIds" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Index" class="btn btn-default">@SharedLocalizer["Cancel"]</a>
+            <input type="button" id="btnRemoveFromLists" value="@SharedLocalizer["Remove"]" class="btn btn-primary" style="float:right;" />
+        </div>
+    </form>
+
+</div>
+
+
+@section scripts{
+    <script src="~/adminlte/plugins/select2/js/select2.full.min.js"></script>
+    <script src="~/js/contact/contact.removefromlists.js"></script>
+}

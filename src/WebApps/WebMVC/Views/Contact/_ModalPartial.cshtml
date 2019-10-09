@@ -1,0 +1,36 @@
+
+<!-- Delete contacts modal -->
+<modal id="deleteContactsModal" title="@Localizer["Delete contacts"].Value">
+    <modal-body>
+        <p>@Localizer["Are you sure you want to permanently delete selected contacts?"].Value</p>
+    </modal-body>
+    <modal-footer dismiss-text="@SharedLocalizer["Cancel"]">
+        <form asp-action="Delete" asp-antiforgery="true" class="getContactsBeforeSubmit" id="deleteContactsForm">
+            <button type="submit" class="btn btn-danger">@SharedLocalizer["Delete"]</button>
+        </form>
+    </modal-footer>
+</modal>
+
+<!-- Activate contacts modal -->
+<modal id="activateContactsModal" title="@Localizer["Activation of contacts"].Value">
+    <modal-body>
+        <p>@Localizer["Are you sure you want to activate selected contacts?"]</p>
+    </modal-body>
+    <modal-footer dismiss-text="@SharedLocalizer["Cancel"]">
+        <form asp-action="Activate" asp-antiforgery="true" class="getContactsBeforeSubmit" id="activateContactsForm">
+            <button type="submit" class="btn btn-primary">@SharedLocalizer["Activate"]</button>
+        </form>
+    </modal-footer>
+</modal>
+
+<!-- Deactivate contacts modal -->
+<modal id="deactivateContactsModal" title="@Localizer["Deactivation of contacts"].Value">
+    <modal-body>
+        <p>@Localizer["Are you sure you want to deactivate selected contacts?"]</p>
+    </modal-body>
+    <modal-footer dismiss-text="@SharedLocalizer["Cancel"]">
+        <form asp-action="Deactivate" asp-antiforgery="true" class="getContactsBeforeSubmit" id="deactivateContactsForm">
+            <button type="submit" class="btn btn-primary">@SharedLocalizer["Deactivate"]</button>
+        </form>
+    </modal-footer>
+</modal>

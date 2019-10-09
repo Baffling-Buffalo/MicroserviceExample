@@ -1,0 +1,153 @@
+﻿@{
+    ViewData["Title"] = Localizer["Role Management"];
+}
+<card title="@Localizer["Role Management"].Value">
+    <card-body>
+        @*<div class="btn-group">
+            <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                @SharedLocalizer["Manage"]<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <form asp-controller="UserGroup" asp-action="AddUsersToRoles" method="post" class="getRolesBeforeSubmit">
+                        <button class="dropdown-item">@Localizer["Add users"]</button>
+                    </form>
+                </li>
+                <li>
+                    <form asp-controller="UserGroup" asp-action="RemoveUsersFromRoles" method="post" class="getRolesBeforeSubmit">
+                        <button class="dropdown-item">@Localizer["Remove users"]</button>
+                    </form>
+                </li>
+            </ul>
+        </div>*@
+
+        <a asp-action="Create" asp-authorize asp-claims="@Permissions.RoleCreate"  class="btn btn-primary btn-sm">@SharedLocalizer["Create New"]</a>
+        <button asp-authorize asp-claims="@Permissions.RoleDelete"  onclick="OpenModal('delete')" class="btn btn-danger btn-sm">@SharedLocalizer["Delete"]</button>
+        <hr />
+
+        <table id="dtRoles" class="table table-hover" style="width:100%;"></table>
+    </card-body>
+</card>
+
+<!-- Modals -->
+<modal id="deleteModal" title="@Localizer["Delete roles"].Value" small="true">
+    <modal-body>
+        <p>@Localizer["Are you sure you want to permanently delete the roles?"]</p>
+    </modal-body>
+    <modal-footer dismiss-text="@SharedLocalizer["Cancel"]">
+        <form asp-action="Delete" class="getRolesBeforeSubmit">
+            <button type="submit" class="btn btn-danger">@SharedLocalizer["Delete"]</button>
+        </form>
+    </modal-footer>
+</modal>
+
+@section scripts {
+    <script>
+        var roleTable;
+        //FOR DATATABLE DATA
+        var selectedRoles = [];
+
+        function datatableInit() {
+            //***** GROUP DATATABLE SERVER SIDE *****
+            userTable = $('#dtRoles').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    type: "POST",
+                    url: "/Role/GetRolesForDatatable"
+                },
+                responsive: {
+                    details: {
+                        type: 'column',
+                        target: 0
+                    }
+                },
+                rowId: 'Id',
+                rowCallback: function (row, data,displayNum) {
+                    if ($.inArray(data.Id.toString(), selectedRoles) !== -1) {
+                        $(row).addClass('selected');
+                    }
+                },
+                columnDefs: [
+                    { targets: [0], data: null, className: 'control', defaultContent: '', orderable: false },
+                    { targets: [1], data: 'Name', title: "@SharedLocalizer["Name"]" },
+                    { targets: [2], data: 'Description', title: "@SharedLocalizer["Description"]" },
+                    {
+                        data: 'SystemRole',
+                        targets: [3],
+                        mData: function (d) { return d.SystemRole == true ? "@SharedLocalizer["Yes"]" : "" },
+                        title: "@Localizer["System role"]",
+                        searchable: false,
+                        orderable: false,
+                    },
+                    {
+                        targets: [4],
+                        title: "@SharedLocalizer["Actions"]",
+                        className: 'text-center',
+                        mData: function (full) {
+                            var id = full.Id;
+                            var html = "";
+                            var editButton = `<a href="@Url.Action("Edit", "Role")/?id=${id}" class="btn btn-xs btn-default">@SharedLocalizer["Edit"]</a>`;
+                            if (@User.HasActionClaims(Permissions.RoleUpdate).ToString().ToLower())
+                                if (full.SystemRole) {
+                                    if (@User.HasActionClaims(Permissions.SystemRoleUpdate).ToString().ToLower())
+                                        html += editButton;
+                                }
+                                else
+                                    html += editButton;
+                            html += `<a href="@Url.Action("Details", "Role")/?id=${id}" class="btn btn-xs btn-default">@SharedLocalizer["Details"]</a>`;
+                            return html;
+                        }
+                    }
+                ]
+            });
+
+            //select row in datatable
+            $('#dtRoles tbody').on('click', 'td', function () {
+
+                //if cell(column) with index of 0 or 7 was clicked, then return
+                //note: column with set 'visible: false' will be ignored
+                var cellIndex = $(this).index();
+                if (cellIndex == 0 || cellIndex == 4)
+                    return;
+
+                //get row of td that was clicked
+                var row = $(this).closest('tr');
+                var id = row.attr("id");
+
+                var index = $.inArray(id, selectedRoles);
+
+                if (index === -1) {
+                    selectedRoles.push(id);
+                } else {
+                    selectedRoles.splice(index, 1);
+                }
+                row.toggleClass('selected');
+            });
+        }
+
+        datatableInit();
+
+        $(".getRolesBeforeSubmit").submit(function (eventObj) {
+            if (!$(this).valid())
+                return;
+
+            for (var i = 0; i < selectedRoles.length; i++) {
+                $(this).append(`<input type="hidden" name="RoleIds" value="${selectedRoles[i]}" /> `);
+            }
+
+            $(this).append(`<input type="hidden" name="ReturnUrl" value="${window.location.pathname}" /> `);
+
+            return true;
+        });
+
+        function OpenModal(name) {
+            if (selectedRoles.length > 0) {
+                $(`#${name}Modal`).modal('show');
+            } else {
+                toastr.warning("@Localizer["Please select at least one role for this action"]");
+            }
+        }
+
+    </script>
+}

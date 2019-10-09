@@ -1,0 +1,285 @@
+﻿@model WebMVC.ViewModels.User.CreateUserViewModel
+
+@{
+    ViewData["Title"] = Localizer["Create User"];
+}
+
+<form asp-action="Create" asp-antiforgery="true" class="getContactBeforeSubmit">
+    <card title="@Localizer["Create New User"].Value">
+        <card-body>
+            <div class="row">
+                <div class="col-12">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Username" class="control-label"></label>
+                        <input asp-for="Username" class="form-control" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input type="password" asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RepeatPassword" class="control-label"></label>
+                        <input type="password" asp-for="RepeatPassword" class="form-control" />
+                        <span asp-validation-for="RepeatPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email" optional class="control-label"></label>
+                        <input asp-for="Email" id="inputEmail" class="form-control" data-inputmask="'alias': 'email'" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FirstName" optional class="control-label"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" optional class="control-label"></label>
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" optional class="control-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Active" class="control-label"></label>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" asp-for="Active" id="activeRadio" value="True" class="custom-control-input" checked />
+                            <label class="custom-control-label" for="activeRadio" style="font-weight: unset;">@Localizer["Activated"]</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" asp-for="Active" id="inactiveRadio" value="False" class="custom-control-input" />
+                            <label class="custom-control-label" for="inactiveRadio" style="font-weight: unset;">@Localizer["Deactivated"]</label>
+                        </div>
+                    </div>
+                    @*<div class="form-group">
+                        <label asp-for="ContactAssign" class="control-label"></label>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" asp-for="ContactAssign" id="contactNewRadio" value="New" class="custom-control-input" data-toggle="collapse" href="#newContactCollapse" role="button" aria-expanded="false" aria-controls="newContactCollapse" />
+                            <label class="custom-control-label" for="contactNewRadio" style="font-weight: unset;">@Localizer["New contact"]</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" asp-for="ContactAssign" id="contactExistingRadio" value="Existing" class="custom-control-input" data-toggle="collapse" href="#existingContactCollapse" role="button" aria-expanded="false" aria-controls="existingContactCollapse" />
+                            <label class="custom-control-label" for="contactExistingRadio" style="font-weight: unset;">@Localizer["Existing contact"]</label>
+                        </div>
+                        <br />
+                        <div class="collapse multi-collapse" id="newContactCollapse">
+                            <div class="card card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                        <div class="form-group">
+                                            <label asp-for="NewContactFirstName" class="control-label"></label>
+                                            <input asp-for="NewContactFirstName" class="form-control" />
+                                            <span asp-validation-for="NewContactFirstName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="NewContactLastName" class="control-label"></label>
+                                            <input asp-for="NewContactLastName" class="form-control" />
+                                            <span asp-validation-for="NewContactLastName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="NewContactEmail" class="control-label"></label>
+                                            <input asp-for="NewContactEmail" class="form-control" />
+                                            <span asp-validation-for="NewContactEmail" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="NewContactPhone" class="control-label"></label>
+                                            <input asp-for="NewContactPhone" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask />
+                                            <span asp-validation-for="NewContactPhone" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse multi-collapse" id="existingContactCollapse">
+                            <div class="card card-body">
+                                <div class="row mb-2">
+                                    <div class="col-lg-3 col-md-3 col-sm-6">
+                                        <comboTree asp-authorize asp-claims="list_read"
+                                                   action="GetListsForComboTreePlugin"
+                                                   controller="List"
+                                                   comboTreeObjVar="listTreeFilter"
+                                                   isMultiselect="true"
+                                                   placeholder="@SharedLocalizer["Lists"]"
+                                                   showMaxItems="2" small="true"
+                                                   selectionCallback="datatableRefresh">
+                                        </comboTree>
+                                    </div>
+                                    <div class="offset-lg-7 col-lg-2 offset-md-7 col-md-3 offset-6 col-6">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input" id="activeContactsSwitch" onchange="datatableRefresh()" checked="checked" />
+                                            <label class="custom-control-label" for="activeContactsSwitch">Active</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <table asp-authorize asp-claims="@Permissions.ContactRead" id="dtContacts" class="table table-hover" style="width:100%;"></table>
+                            </div>
+                        </div>
+                    </div>*@
+                </div>
+            </div>
+
+        </card-body>
+        <card-footer>
+            <a asp-action="Index" class="btn btn-default">@SharedLocalizer["Cancel"]</a>
+            <input type="submit" value="@SharedLocalizer["Create"]" class="btn btn-primary" style="float:right" />
+        </card-footer>
+    </card>
+</form>
+
+@section scripts{
+    <script>
+        $(function () {
+            $('[data-mask]').inputmask();
+        })
+
+        @*$(function () {
+            $('[data-mask]').inputmask();
+            $('#contactNewRadio').click(function () {
+                $('#existingContactCollapse').collapse('hide');
+            })
+            $('#contactExistingRadio').click(function () {
+                $('#newContactCollapse').collapse('hide');
+            })
+        })
+        $("input[type='radio']").click(function () {
+            var previousValue = $(this).attr('previousValue');
+            var name = $(this).attr('name');
+
+            if (previousValue == 'checked') {
+                $(this).removeAttr('checked');
+                $(this).prop('checked', false);
+                $(this).attr('previousValue', false);
+            } else {
+                $("input[name=" + name + "]:radio").attr('previousValue', false);
+                $(this).attr('previousValue', 'checked');
+            }
+        });
+
+        var contactTable;
+        var selectedRow = null;
+        var selectedContacts = [];
+
+        var contactAssign = @Json.Serialize(Model?.ContactAssign ?? "");
+        var selected = @Json.Serialize(Model?.ExistingContactId ?? 0);
+        if (contactAssign == "New")
+            $('#newContactCollapse').collapse('show');
+        else if (contactAssign == "Existing") {
+            $('#existingContactCollapse').collapse('show');
+            if(selected != null && selected != 0)
+                selectedContacts.push(selected);
+        }
+
+
+        
+        //FOR DATATABLE AJAX DATA
+        var active = true;
+        var listIds = [];
+        var excludeContacts = @Json.Serialize(ViewBag.AssignedContactIds);
+
+        function datatableInit() {
+            //***** CONTACT DATATABLE SERVER SIDE *****
+            var show = @(User.HasActionClaims(Permissions.ContactRead).ToString().ToLower());
+            if (!show)
+                return;
+            contactsTable = $('#dtContacts').DataTable({
+                language: GetLocalizedLang(),
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    type: "POST",
+                    url: "@Url.Action("GetContactsForDataTable", "Contact")",
+                    data: function (d) {
+                        if (listIds.length > 0)
+                            d.listIds = listIds;
+                        d.active = active;
+                        d.excludeIds = excludeContacts;
+                        return d;
+                    },
+                },
+                responsive: {
+                    details: {
+                        type: 'column',
+                        target: 0
+                    }
+                },
+                rowId: 'Id',
+                rowCallback: function (row, data) {
+                    if ($.inArray(data.Id, selectedContacts) !== -1) {
+                        $(row).addClass('selected');
+                    }
+                },
+                columnDefs: [
+                    { targets: [0], data: null, className: 'control', defaultContent: '', orderable: false },
+                    { targets: [1], data: 'FirstName', title: '@SharedLocalizer["First name"]' },
+                    { targets: [2], data: 'LastName', title: '@SharedLocalizer["Last name"]' },
+                    { targets: [3], data: 'Email', title: '@SharedLocalizer["Email"]' },
+                    { targets: [4], data: 'Phone', title: '@SharedLocalizer["Phone"]' },
+                ]
+            });
+
+            //select row in datatable
+            $(document).on('click', '#dtContacts tbody td', function () {
+                //if cell(column) with index of 0 or 6 was clicked, then return
+                //note: column with set 'visible: false' will be ignored
+                var cellIndex = $(this).index();
+                if (cellIndex == 0)
+                    return;
+
+                if(selectedRow!= null)
+                    selectedRow.toggleClass('selected');
+                selectedContacts = [];
+
+                //get row of td that was clicked
+                selectedRow = $(this).closest('tr');
+                var id = selectedRow.attr("id");
+
+                var index = $.inArray(id, selectedContacts);
+
+                if (index === -1) {
+                    selectedContacts.push(id);
+                } else {
+                    selectedContacts.splice(index, 1);
+                }
+
+                selectedRow.toggleClass('selected');
+            });
+        }
+
+        datatableInit();
+
+
+        function datatableRefresh() {
+            if (typeof listTreeFilter !== 'undefined')
+                listIds = listTreeFilter.getSelectedItemsId();
+            active = $("#activeContactsSwitch").is(':checked');
+
+            contactsTable.ajax.reload();
+        }
+
+        $(".getContactBeforeSubmit").submit(function (eventObj) {
+            if (!$("#contactExistingRadio").is(':checked'))
+                return true;
+
+            if (selectedContacts.length > 0) {
+                for (var i = 0; i < selectedContacts.length; i++) {
+                    $(this).append(`<input type="hidden" name="ExistingContactId" value="${selectedContacts[i]}" /> `);
+                }
+                return true;
+            } else {
+                toastr.warning("@Localizer["Please select one contact for this action"]");
+                return false;
+            }
+        });
+            *@
+
+    </script>
+}
+

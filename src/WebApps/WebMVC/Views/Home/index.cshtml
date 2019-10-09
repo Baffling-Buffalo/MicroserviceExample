@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewData["Title"] = "General";
+}
+
+@using Microsoft.AspNetCore.Authentication
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title"></h3>
+    </div>
+    <div class="card-body">
+
+        <h2>@Localizer["Claims"]</h2>
+
+        <dl>
+            @foreach (var claim in User?.Claims)
+            {
+                <dt>@claim.Type</dt>
+                <dd>@claim.Value</dd>
+            }
+        </dl>
+
+        <h2>@Localizer["Properties"]</h2>
+
+        <dl>
+            @if (User.Identity.IsAuthenticated)
+            {
+                @foreach (var prop in (await Context.AuthenticateAsync()).Properties.Items)
+                {
+                    <dt>@prop.Key</dt>
+                    <dd>@prop.Value</dd>
+                }
+            }
+        </dl>
+    </div>
+</div>
+
+
+
+@section scripts {
+    
+}

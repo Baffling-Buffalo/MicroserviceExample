@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewData["Title"] = "Test";
+}
+@{ Layout = null; }
+<h2>Test</h2>
+
+<a bs-toggle-modal="modal-test" role="button" class="btn btn-primary">Toggle Modal</a>
+<button class="btn btn-primary">Toggle Modal</button>
+
+
+<modal id="modal-test"
+       title="Modal Title">
+    <modal-body>
+        <h4>Something happened</h4>
+        <p>Something happened</p>
+    </modal-body>
+    <modal-footer dismiss-text="@SharedLocalizer["Cancel"]">
+        <a class="btn btn-primary">Ok?</a>
+    </modal-footer>
+</modal>
+
+
+@section Styles{
+    <link href="~/lib/comboTreePlugin/comboTreePlugin.css" rel="stylesheet" />
+
+}
+
+<h2>Index</h2>
+
+<comboTreeUserGroups id="comboTreeUserGroups" isMultiselect="true"></comboTreeUserGroups>
+
+@section Scripts{
+    <script src="~/lib/comboTreePlugin/comboTreePlugin.js"></script>
+    <script src="~/lib/comboTreePlugin/icontains.js"></script>
+}
+
+
+<div asp-authorize>
+    <h4>USER DIV</h4>
+</div>
+
+<div asp-authorize asp-roles="admin">
+    <h4>ADMIN DIV</h4>
+</div>
+
+<div asp-authorize asp-roles="SuperUser">
+    <h4>SUPERUSER DIV</h4>
+</div>
+

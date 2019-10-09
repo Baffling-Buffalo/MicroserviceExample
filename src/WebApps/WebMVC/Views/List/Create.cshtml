@@ -1,0 +1,56 @@
+﻿@model WebMVC.ViewModels.List.ListViewModel
+
+@{
+    ViewData["Title"] = SharedLocalizer["Create"];
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">@Localizer["Create new list"]</h3>
+    </div>
+
+    <form asp-controller="List" asp-action="Create" asp-antiforgery="true" method="post" id="createListForm">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group">
+                        <label asp-for="ListName" class="control-label"></label>
+                        <input asp-for="ListName" class="form-control" placeholder="@SharedLocalizer["Insert list name"]" />
+                        <span asp-validation-for="ListName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" placeholder="@SharedLocalizer["Insert description"]" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group" asp-authorize asp-claims="list_read">
+                        <label asp-for="ParentId" class="control-label"></label>
+                        <comboTree action="GetListsForComboTreePlugin"
+                                   controller="List"
+                                   comboTreeObjVar="parentComboTree"
+                                   isMultiselect="false"
+                                   placeholder="@SharedLocalizer["Choose parent"]"
+                                   showMaxItems="2"
+                                   small="false"
+                                   selectedValue="@Model?.ParentId">
+                        </comboTree>
+                        <input type="hidden" asp-for="ParentId" id="parentId" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Index" class="btn btn-default">@SharedLocalizer["Cancel"]</a>
+            <input type="button" id="btnCreate" value="@SharedLocalizer["Create"]" class="btn btn-primary" style="float:right;" />
+        </div>
+    </form>
+</div>
+
+
+@section Scripts{
+    <script src="~/js/list/list.create.js"></script>
+}

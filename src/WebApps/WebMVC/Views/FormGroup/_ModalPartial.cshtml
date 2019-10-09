@@ -1,0 +1,24 @@
+﻿<!-- Delete groups modal -->
+<div class="modal fade" id="deleteGroupsModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">@Localizer["Are you sure? Groups will be permanently deleted"]</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+            </div>
+            <form asp-action="Delete" asp-antiforgery="true" class="getGroupsBeforeSubmit" id="deleteGroupsForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label" style="font-weight: unset;">
+                            @Localizer["Note: You cannot delete groups if they have subgroups or forms that belong to them"]
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">@SharedLocalizer["Cancel"]</button>
+                    <button type="submit" class="btn btn-danger">@SharedLocalizer["Delete"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

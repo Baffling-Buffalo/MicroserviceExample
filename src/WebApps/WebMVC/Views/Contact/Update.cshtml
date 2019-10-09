@@ -1,0 +1,80 @@
+﻿@model WebMVC.ViewModels.Contact.ContactViewModel
+
+@{
+    ViewData["Title"] = SharedLocalizer["Update"];
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">@Localizer["Update contact"]</h3>
+    </div>
+    <form asp-controller="Contact" asp-action="Update" asp-antiforgery="true" method="post" id="updateContactForm">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input asp-for="Id" hidden />
+
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" class="form-control" placeholder="@SharedLocalizer["Insert first name"]" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control" placeholder="@SharedLocalizer["Insert last name"]" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" placeholder="@SharedLocalizer["Insert e-mail"]" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Phone" class="control-label"></label>
+                        <input asp-for="Phone" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask placeholder="@SharedLocalizer["Insert phone number"]" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Active" class="control-label"></label>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" asp-for="Active" id="activeRadio" value="True" class="custom-control-input" checked />
+                            <label class="custom-control-label" for="activeRadio" style="font-weight: unset;">@Localizer["Active"]</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" asp-for="Active" id="inactiveRadio" value="False" class="custom-control-input" />
+                            <label class="custom-control-label" for="inactiveRadio" style="font-weight: unset;">@Localizer["Inactive"]</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" asp-authorize asp-claims="list_read">
+                        <label asp-for="ListIds" class="control-label"></label>
+                        <comboTree action="GetListsForComboTreePlugin"
+                                   controller="List"
+                                   comboTreeObjVar="comboTreeLists"
+                                   isMultiselect="true"
+                                   placeholder="@SharedLocalizer["Select lists"]"
+                                   showMaxItems="2"
+                                   small="false"
+                                   selectedValues="@Model?.ListIds?.ToArray()">
+                        </comboTree>
+                        <select hidden multiple="multiple" asp-for="ListIds"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Index" class="btn btn-default">@SharedLocalizer["Cancel"]</a>
+            <input type="button" id="btnUpdate" value="@SharedLocalizer["Save"]" class="btn btn-primary" style="float:right;" />
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script src="~/js/contact/contact.update.js"></script>
+}

@@ -1,0 +1,113 @@
+<!-- Wrapper-->
+<div id="wrapper">
+	<div class="row border-bottom">
+		<nav class="navbar navbar-static-top">
+			<div class="container-fluid">
+				<!--<div class="navbar-header">-->
+					<!--<a class="navbar-brand" href="#">OZ Sale Demo System</a>-->
+				<!--</div>-->
+				<div class="col-sm-6 col-xs-6">
+					<ul class="nav navbar-nav navbar-left">
+						<li class="col-xs-4" ng-if="showBack"><div ng-click="goBack()" style="text-align: center"><i class="fa fa-arrow-circle-left"></i> Back</div></li>
+					</ul>
+				</div>
+				<div class="col-sm-6 col-xs-6">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="col-xs-4" ng-if="showNavigation"><div ng-click="goPrevious()" style="text-align: center" ><i class="fa fa-paper-plane"></i> Prev</div></li>
+						<li class="col-xs-4" ng-if="showNavigation"><div ng-click="goNext()" style="text-align: center"><i class="fa fa-paper-plane"></i> Next</div></li>
+						<li class="col-xs-4" ng-if="showSave"><div ng-click="doSave()" style="text-align: center"><i class="fa fa-paper-plane"></i> Save</div></li>
+						<li class="col-xs-4" ng-if="showSubmitAll && (!showSubmitSingle || allAttendees) && (companyName === 'FORCS_SG')"><div ng-click="doSubmit()" style="text-align: center"><i class="fa fa-paper-plane"></i> Send</div></li>
+						<li class="col-xs-4" ng-if="showSubmitSingle && (!showSubmitAll || !allAttendees || companyName !== 'FORCS_SG')"><div ng-click="submitSingle()" style="text-align: center"><i class="fa fa-paper-plane"></i> Send</div></li>
+						<li class="col-xs-4" ng-if="showRegister"><div ng-click="registerCampaign()" style="text-align: center"><i class="fa fa-paper-plane"></i> Register</div></li>
+						<li class="col-xs-4" ng-if="showRegisterCustomer"><div ng-click="doRegisterCustomer()" style="text-align: center"><i class="fa fa-paper-plane"></i> Register</div></li>
+						<li class="col-xs-4" ng-if="showSubmitFormEmail"><div ng-click="submitWithFormEmail()" style="text-align: center"><i class="fa fa-paper-plane"></i> Submit</div></li>
+						<li class="col-xs-4" ng-if="showSubmitNoEmail"><div ng-click="submitNoEmail()" style="text-align: center"><i class="fa fa-paper-plane"></i> Submit</div></li>
+						<li class="col-xs-4" ng-if="showSubmitQRScan"><div ng-click="submitQRScan()" style="text-align: center"><i class="fa fa-paper-plane"></i> Submit</div></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<!--<nav class="navbar navbar-static-top" role="navigation" style="margin: 0">-->
+			<!--&lt;!&ndash;<ul ng-show="$ctrl.showSubmitAll && $ctrl.showSubmitSingle" class="col-sm-6 nav navbar-top-links navbar-left">&ndash;&gt;-->
+				<!--&lt;!&ndash;<label class="col-sm-5" ><input type="checkbox" ng-model="allAttendees">Check to select all attendees</label>&ndash;&gt;-->
+				<!--&lt;!&ndash;<select class="col-md-7 form-control m-b" size="2"&ndash;&gt;-->
+						<!--&lt;!&ndash;ng-show="allAttendees"&ndash;&gt;-->
+						<!--&lt;!&ndash;ng-options="p.email disable when 'Y' == 'Y' for p in customers  "&ndash;&gt;-->
+						<!--&lt;!&ndash;ng-model="selected">&ndash;&gt;-->
+					<!--&lt;!&ndash;&lt;!&ndash;| filter:{attendanceFlag:'Y'}&ndash;&gt;&ndash;&gt;-->
+					<!--&lt;!&ndash;<option value="" ng-if="false"></option>&ndash;&gt;-->
+				<!--&lt;!&ndash;</select>&ndash;&gt;-->
+			<!--&lt;!&ndash;</ul>&ndash;&gt;-->
+			<!--<ul class="nav navbar-top-links">-->
+				<!--<li class="navbar-left">-->
+					<!--<table ng-style="mainmenubar_style">-->
+						<!--<tr ng-if="showSubmitAll && showSubmitSingle && companyName === 'FORCS_SG'">-->
+							<!--<td class="form-group fancy-form" rowspan="2">-->
+								<!--<input type="checkbox" name="fancy-checkbox-default" id="fancy-checkbox-default" autocomplete="off" ng-model="allAttendees" />-->
+								<!--<div class="btn-group">-->
+									<!--<label for="fancy-checkbox-default" style="font-size: 12px" class="btn btn-default">-->
+										<!--<span class="glyphicon glyphicon-ok"></span>-->
+										<!--<span> </span>-->
+									<!--</label>-->
+									<!--<label for="fancy-checkbox-default" style="font-size: 12px" class="btn btn-default">-->
+										<!--Click to select all emails-->
+									<!--</label>-->
+								<!--</div>-->
+							<!--</td>-->
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<th ng-show="showBack" ng-click="goBack()" width="20%" style="text-align: center"><i class="fa fa-arrow-circle-left"></i></th>-->
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<td ng-show="showBack" ng-click="goBack()" style="font-size: 12px" align="center">Back</td>-->
+						<!--</tr>-->
+					<!--</table>-->
+				<!--</li>-->
+				<!--<li class="navbar-right">-->
+					<!--<table ng-style="mainmenubar_style">-->
+						<!--<tr>-->
+							<!--<th ng-show="showNavigation" ng-click="goPrevious()" width="20%" style="text-align: center"><i class="fa fa-angle-double-left"></i></th>-->
+							<!--<th ng-show="showNavigation" ng-click="goNext()" width="20%" style="text-align: center"><i class="fa fa-angle-double-right"></i></th>-->
+							<!--<th ng-show="showSave" ng-click="doSave()" width="20%" style="text-align: center"><i class="fa fa-floppy-o"></i></th>-->
+							<!--<th ng-show="showSubmitAll    && (!showSubmitSingle || allAttendees) && (companyName === 'FORCS_SG')" ng-click="doSubmit()" width="20%" style="text-align: center"><i class="fa fa-paper-plane"></i></th>-->
+							<!--<th ng-show="showSubmitSingle && (!showSubmitAll    || !allAttendees ||  companyName !== 'FORCS_SG')" ng-click="submitSingle()" width="20%" style="text-align: center"><i class="fa fa-paper-plane"></i></th>-->
+							<!--<th ng-show="showRegister" ng-click="registerCampaign()" width="20%" style="text-align: center"><i class="fa fa-paper-plane"></i></th>-->
+							<!--<th ng-show="showSubmitFormEmail" ng-click="submitWithFormEmail()" width="20%" style="text-align: center"><i class="fa fa-paper-plane"></i></th>-->
+							<!--<th ng-show="showSubmitNoEmail" ng-click="submitNoEmail()" width="20%" style="text-align: center"><i class="fa fa-paper-plane"></i></th>-->
+							<!--<th ng-show="showSubmitQRScan" ng-click="submitQRScan()" width="20%" style="text-align: center"><i class="fa fa-paper-plane"></i></th>-->
+							<!--<th ng-show="showRegisterCustomer" ng-click="doRegisterCustomer()" width="20%" style="text-align: center"><i class="fa fa-paper-plane"></i></th>-->
+						<!--</tr>-->
+						<!--<tr>-->
+							<!--<td ng-show="showNavigation" ng-click="goPrevious()" style="font-size: 12px" align="center">Prev</td>-->
+							<!--<td ng-show="showNavigation" ng-click="goNext()" style="font-size: 12px" align="center">Next</td>-->
+							<!--<td ng-show="showSave" ng-click="doSave()" style="font-size: 12px" align="center">Save</td>-->
+							<!--<td ng-show="showSubmitAll    && (!showSubmitSingle || allAttendees) && (companyName === 'FORCS_SG')" ng-click="doSubmit()" style="font-size: 12px" align="center">Send</td>-->
+							<!--<td ng-show="showSubmitSingle && (!showSubmitAll || !allAttendees || companyName !== 'FORCS_SG')" ng-click="submitSingle()" style="font-size: 12px" align="center">Send</td>-->
+							<!--<td ng-show="showRegister" ng-click="registerCampaign()" style="font-size: 12px" align="center">Register</td>-->
+							<!--<td ng-show="showRegisterCustomer" ng-click="doRegisterCustomer()" style="font-size: 12px" align="center">Register</td>-->
+							<!--<td ng-show="showSubmitFormEmail" ng-click="submitWithFormEmail()" style="font-size: 12px" align="center">Submit</td>-->
+							<!--<td ng-show="showSubmitNoEmail" ng-click="submitNoEmail()" style="font-size: 12px" align="center">Submit</td>-->
+							<!--<td ng-show="showSubmitQRScan" ng-click="submitQRScan()" style="font-size: 12px" align="center">Submit</td>-->
+						<!--</tr>-->
+					<!--</table>-->
+				<!--</li>-->
+			<!--</ul>-->
+			<!--<ul class="nav navbar-top-links navbar-left">-->
+			<!--</ul>-->
+		<!--</nav>-->
+	</div>
+
+	<!-- Toaster -->
+	<toaster-container></toaster-container>
+	 
+<!-- 	<div id="oz_div" ng-style="ozviewer_div_style"></div> -->
+</div>
+
+<!--<style>-->
+	<!--.ozMobileView .scrollable-list {-->
+		<!--height: 40px;-->
+		<!--overflow-y: scroll;-->
+	<!--}-->
+
+<!--</style>-->

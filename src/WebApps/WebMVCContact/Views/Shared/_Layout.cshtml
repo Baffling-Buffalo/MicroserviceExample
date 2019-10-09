@@ -1,0 +1,52 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="en" />
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+    <!-- Generated: 2019-04-04 16:55:45 +0200 -->
+    <title>@ViewData["Title"]</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    @{ await Html.RenderPartialAsync("_CSS");}
+    @RenderSection("Styles", required: false)
+</head>
+<body class="">
+    <div class="page">
+        <div class="flex-fill">
+            @Html.Partial("_HeaderNavbar")
+            <div class="my-3 my-md-5">
+                <div class="container">
+                    @*<div class="page-header">
+                        <h1 class="page-title">
+                            Dashboard
+                        </h1>
+                    </div>*@
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+       
+        @Html.Partial("_Footer")
+    </div>
+
+
+    @{await Html.RenderPartialAsync("_JS");}
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

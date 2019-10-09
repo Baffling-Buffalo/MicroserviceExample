@@ -1,0 +1,192 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Contact.API</name>
+    </assembly>
+    <members>
+        <member name="M:Contact.API.Controllers.ContactController.Get">
+            <summary>
+            Get all contacts
+            </summary>
+            <returns> list of contacts </returns>
+            <response code="200">Contacts are returned successfully</response>
+            <response code="500">Exeption while selecting data from dbContext</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ContactController.GetContactsForDataTable(System.Int32[],System.Boolean)">
+            <summary>
+            Get contacts for datatable
+            </summary>
+            <returns>Datatable formatted object with contacts</returns>
+            <response code="200">Contacts are returned successfully</response>
+            <response code="400">List with passed listId could not be found</response>
+            <response code="500">Exeption while selecting data from dbContext</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ContactController.GetContactsInList(System.Int32)">
+            <summary>
+            Get all contacts that are members of list
+            </summary>
+            <param name="listId"></param>
+            <returns></returns>
+            <response code="200">Contacts retrieved successfully</response>
+            <response code="204">There are no contacts that have passed list</response>
+            <response code="400">List with given id could not be found</response>
+            <response code="500">Exeption occured</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ContactController.Create(Contact.API.DTOs.Contact.CreateContactDTO)">
+            <summary>
+            Create new contact
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            <response code="200">Contact created</response>
+            <response code="400">List with passed listId could not be found</response>
+            <response code="409">Model is not valid</response>
+            <response code="500">Exeption while saving data</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ContactController.Update(Contact.API.DTOs.Contact.UpdateContactDTO)">
+            <summary>
+            Update contact
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            <response code="200">Contact updated</response>
+            <response code="400">Contact with given id could not be found</response>
+            <response code="409">Contact with given e-mail already exists</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ContactController.Delete(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Delete contacts
+            </summary>
+            <param name="contactIds"></param>
+            <returns></returns>
+            <response code="200">Contacts deleted</response>
+            <response code="400">Contact with given id could not be found</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ContactController.Activate(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Activate contacts
+            </summary>
+            <param name="ids"></param>
+            <returns></returns>
+            <response code="200">Contacts are activated</response>
+            <response code="400">Contacts with given ids could not be found</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ContactController.Deactivate(System.Collections.Generic.List{System.Int32})">
+            <summary>
+            Deactivate contacts
+            </summary>
+            <param name="ids"></param>
+            <returns></returns>
+            <response code="200">Contacts are deactivated</response>
+            <response code="400">Contacts with given ids could not be found</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ContactController.AddContactsToLists(Contact.API.DTOs.Contact.ContactListDTO)">
+            <summary>
+            Add contacts to lists
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            <response code="200">Added successfully</response>
+            <response code="400">Contact or list could not be found</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ContactController.RemoveContactsFromLists(Contact.API.DTOs.Contact.ContactListDTO)">
+            <summary>
+            Remove contacts from lists
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            <response code="200">Removed successfully</response>
+            <response code="400">Contact or list could not be found</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ListController.Get">
+            <summary>
+            Get all lists
+            </summary>
+            <returns> list of lists </returns>
+            <response code="200">Lists are returned successfully</response>
+            <response code="500">Exeption while selecting data from contactContext</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ListController.GetListsForComboTreePlugin(System.String)">
+            <summary>
+            Get lists for combroTreePlugin
+            </summary>
+            <returns>comboTreePlugin formatted json with lists</returns>
+            <response code="200">json returned successfully</response>
+            <response code="400">Passed list of ids is not valid. Must be comma-separated list of numbers</response>
+            <response code="500">Exeption while selecting data from _contactContext</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ListController.GetListsInContact(System.Int32)">
+            <summary>
+            Get all lists that passed contact has
+            </summary>
+            <param name="contactId"></param>
+            <returns></returns>
+            <response code="200">Lists retrieved successfully</response>
+            <response code="204">There are no lists that passed contact has</response>
+            <response code="400">Contact with given id could not be found</response>
+            <response code="500">Exeption occured</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ListController.GetChildren(System.Int32)">
+            <summary>
+            Get children of a list
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+            <response code="200">Children returned successfully</response>
+            <response code="400">List with passed id could not be found</response>
+            <response code="500">Exeption occured</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ListController.Create(Contact.API.DTOs.List.CreateListDTO)">
+            <summary>
+            Create new list
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            <response code="200">List created</response>
+            <response code="400">Model is not valid; parentId could not be found; contact with passed contactId could not be found</response>
+            <response code="500">Exeption while saving data</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ListController.Update(Contact.API.DTOs.List.UpdateListDTO)">
+            <summary>
+            Update list
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+            <response code="200">List updated</response>
+            <response code="400">Model is not valid; List with given id could not be found</response>
+            <response code="500">Exeption while saving data</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ListController.Delete(System.Int32[],System.Boolean)">
+            <summary>
+            Delete lists
+            </summary>
+            <param name="listIds"></param>
+            <param name="deleteChildren"></param>
+            <returns></returns>
+            <response code="200">List deleted</response>
+            <response code="400">List with given id could not be found</response>
+            <response code="500">Exeption while saving data</response>
+        </member>
+        <member name="M:Contact.API.Controllers.ListController.RawCollectionToTree(System.Collections.Generic.List{Contact.API.Models.List})">
+            <summary>
+            Creates tree for ComboTreePlugin
+            </summary>
+            <param name="collection"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Contact.API.Controllers.ListController.GetItemsByIdsAsync(System.String)">
+            <summary>
+            Gets all lists
+            </summary>
+            <param name="listIds">String with comma separated ids of lists</param>
+            <returns>List of lists</returns>
+        </member>
+        <member name="M:Contact.API.Controllers.ListController.DeleteChildren(System.Int32)">
+            <summary>
+            Deleted all children that passed list has
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

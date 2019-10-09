@@ -1,0 +1,43 @@
+﻿<script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+<script type="text/javascript">
+
+        if ('@User.Identity.IsAuthenticated' === 'True') {
+
+            stablishConnection();
+        }
+
+        function stablishConnection() {
+            let connection = new signalR.HubConnectionBuilder()
+                .withUrl('@AppSettings.Value.SignalrHubUrl/notificationshub', {
+                    transport: signalR.HttpTransportType.LongPolling,
+                    accessTokenFactory: function() {
+                        return "Authorization", getToken();
+                    }
+                })
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+
+            connection.start()
+                .then(function () {
+                    console.log('User Registered to Signalr Hub');
+                    registerNotificationHandlers(connection);
+                })
+                .catch(function (err) {
+                    return console.error(err.toString());
+                });
+        }
+
+        function registerNotificationHandlers(connection) {
+
+            connection.on("Notification", function (data) {
+                console.log("notification");
+                showToastr(data.type, data.message);
+            });
+
+        }
+
+        function getToken() {
+            return '@Context.GetTokenAsync("access_token").Result';
+        }
+
+</script>

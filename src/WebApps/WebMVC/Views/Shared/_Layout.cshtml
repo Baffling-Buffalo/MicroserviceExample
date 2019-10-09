@@ -1,0 +1,76 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewData["Title"]</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    @{ await Html.RenderPartialAsync("_CssAdminLTE");}
+
+    @RenderSection("Styles", required: false)
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <!-- jQuery here so it can be used in inline scripts -->
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <!-- Site wrapper -->
+    <div class="wrapper">
+
+        @Html.Partial("_HeaderNavbar")
+
+        <!-- =============================================== -->
+        <!-- Left side column. contains the sidebar -->
+        @Html.Partial("_LeftNavigation")
+        <!-- =============================================== -->
+        <!-- Content Wrapper. Contains page content -->
+
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        @*<div class="col-sm-6">
+                                <h1 class="m-0 text-dark">@Localizer["Data Tables"]</h1>
+                            </div><!-- /.col -->
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-right">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active">Dashboard v1</li>
+                                </ol>
+                            </div><!-- /.col -->*@
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-12">
+
+                        @RenderBody()
+
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- /.content-wrapper -->
+        @Html.Partial("_Footer")
+        <!-- Control Sidebar -->
+        @Html.Partial("_ControlSidebar")
+    </div>
+
+    @{ 
+        await Html.RenderPartialAsync("_DataTableLocalize");
+        await Html.RenderPartialAsync("_JsAdminLTE");
+        await Html.RenderPartialAsync("_Toastr");
+    }
+    <partial name="_SignalR">
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

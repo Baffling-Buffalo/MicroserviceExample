@@ -1,0 +1,111 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row row-cards row-deck">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-status bg-blue"></div>
+            <div class="card-header">
+                <h3 class="card-title">Invoices</h3>
+            </div>
+            <div class="card-body table-responsive">
+                <table id="table" class="table table-hover" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>E-mail</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script>
+        var data = [
+            {
+                "FirstName": "Tiger Nixon",
+                "LastName": "System Architect",
+                "Email": "$3,120",
+            },
+            {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            },
+            {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            }, {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            }, {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            }, {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            }, {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            }, {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            }, {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            }, {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            }, {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            }, {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            }, {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            }, {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            }, {
+                "FirstName": "Garrett Winters",
+                "LastName": "Director",
+                "Email": "$5,300",
+            }
+        ]
+        $('#table').DataTable({
+            data: data,
+            columns: [
+                { data: 'FirstName' },
+                { data: 'LastName' },
+                { data: 'Email' },
+                {
+                    data: function () {
+                        return '<a href="#" class="btn btn-secondary btn-sm">Details</a>';
+                    }
+                }
+            ]
+        });
+    </script>
+}
