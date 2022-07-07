@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Audit.NET" Version="14.6.3" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.22" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.0" />
     <PackageReference Include="Serilog" Version="2.8.0" />
   </ItemGroup>
